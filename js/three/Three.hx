@@ -10,7 +10,6 @@ extern class Camera extends Object3D {
     public var matrixWorldInverse : Matrix4;
     public var projectionMatrix : Matrix4;
     public var projectionMatrixInverse : Matrix4;
-    public function lookAt(target:Vector3) : Void;
 }
 
 @:native("THREE.PerspectiveCamera")
@@ -291,7 +290,7 @@ extern class Quaternion {
     public function copy(q:Quaternion) : Quaternion;
     public function setFromEuler(v:Vector3) : Quaternion;
     public function setFromAxisAngle(axis:Vector3, angle:Float) : Quaternion;
-    public function setFromRotationMatrix(m:Matrix) : Quaternion;
+    public function setFromRotationMatrix(m:Matrix4) : Quaternion;
     public function calculateW() : Quaternion;
     public function inverse() : Quaternion;
     public function length() : Float;
@@ -480,7 +479,6 @@ extern class SpotLight extends Light {
     public var intensity : Float;
     public var target : Object3D;
     public var distance : Float;
-    public var castShadow : Bool;
     public function new(hexColor:Int, ?intensity:Float, ?distance:Float, ?castShadow:Bool) : Void;
 }
 
@@ -558,17 +556,18 @@ extern class MeshBasicMaterial extends Material {
     public var map : Texture;
     public var lightMap : Texture;
     public var envMap : Texture; // TextureCube?
-    public var combine : Int; // THREE.Multiply
+    public var combine : Int; // Operation.Multiply
     public var reflectivity : Float;
     public var refractionRatio : Float;
     public var fog : Bool;
-    public var shading : Int; // THREE.SmoothShading
+    public var shading : Int; // Shading.Smooth
     public var wireframe : Bool;
     public var wireframeLinewidth : Float;
     public var wireframeLinecap : String;
     public var wireframeLinejoin : String;
     public var vertexColors : Bool; // false, THREE.VertexColors, THREE.FaceColors
     public var skinning : Bool;
+    public var morphTargets : Bool;
     /**
      * @author mr.doob / http://mrdoob.com/
      * @author alteredq / http://alteredqualia.com/
@@ -598,16 +597,18 @@ extern class MeshBasicMaterial extends Material {
      *      fog: <bool>
      * }
      */
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
 @:native("THREE.MeshDepthMaterial")
 extern class MeshDepthMaterial extends Material {
-    public var shading : Int;
+    public var shading : Int; // Shading.Smooth
     public var wireframe : Bool;
     public var wireframeLinewidth : Float;
+    public function new(?parameters:Dynamic) : Void;
 }
 
+// in fact does not extends Material...
 @:native("THREE.MeshFaceMaterial")
 extern class MeshFaceMaterial extends Material {
     public function new() : Void;
@@ -616,21 +617,22 @@ extern class MeshFaceMaterial extends Material {
 @:native("THREE.MeshLambertMaterial")
 extern class MeshLambertMaterial extends Material {
     public var color : Color;
+    public var ambient : Color;
     public var map : Texture;
     public var lightMap : Texture;
     public var envMap : Texture; // TextureCube?
-    public var combine : Int; // THREE.Multiply
+    public var combine : Int; // Operation.Multiply
     public var reflectivity : Float;
     public var refractionRatio : Float;
     public var fog : Bool;
-    public var shading : Int;
+    public var shading : Int; // Shading.Smooth
     public var wireframe : Bool;
     public var wireframeLinewidth : Float;
     public var wireframeLinecap : String; // 'round'
     public var wireframeLinejoin : String; // 'round'
     public var vertexColors : Bool;
     public var skinning : Bool;
-    public var morphTargets : Array<{name:String, vertices:Array<Vertex>}>;
+    public var morphTargets : Bool;
     /**
      * @author mr.doob / http://mrdoob.com/
      * @author alteredq / http://alteredqualia.com/
@@ -662,12 +664,12 @@ extern class MeshLambertMaterial extends Material {
      *      fog: <bool>
      * }
      */
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
 @:native("THREE.MeshNormalMaterial")
 extern class MeshNormalMaterial extends Material {
-    public var shading : Int;
+    public var shading : Int; // Shading.Flat
     public var wireframe : Bool;
     public var wireframeLinewidth : Float;
     /**
@@ -684,7 +686,7 @@ extern class MeshNormalMaterial extends Material {
      *  wireframeLinewidth: <float>
      * }
      */
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
 @:native("THREE.MeshPhongMaterial")
@@ -693,15 +695,23 @@ extern class MeshPhongMaterial extends Material {
     public var ambient : Color;
     public var specular : Color;
     public var shininess : Float;
+    public var metal : Bool;
+    public var perPixel : Bool;
     public var map : Texture;
     public var lightMap : Texture;
     public var envMap : Texture; // TextureCube?
-    public var combine : Int; // THREE.Multiply
+    public var combine : Int; // Operation.Multiply
     public var reflectivity : Float;
     public var refractionRatio : Float;
     public var fog : Bool;
-    public var shading : Int;
+    public var shading : Int; // Shading.Smooth
+    public var wireframe : Bool;
+    public var wireframeLinewidth : Float;
+    public var wireframeLinecap : String;
+    public var wireframeLinejoin : String;
+    public var vertexColors : Bool;
     public var skinning : Bool;
+    public var morphTargets : Bool;
     /**
      * @author mr.doob / http://mrdoob.com/
      * @author alteredq / http://alteredqualia.com/
@@ -735,7 +745,41 @@ extern class MeshPhongMaterial extends Material {
      *      fog: <bool>
      * }
      */
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
+}
+
+@:native("THREE.ParticleBasicMaterial")
+extern class ParticleBasicMaterial extends Material {
+    public var color : Color;
+    public var map : Texture;
+    public var size : Float;
+    public var sizeAttenuation : Bool;
+    public var vertexColors : Bool;
+    public var fog : Bool;
+    public function new(?parameters:Dynamic) : Void;
+}
+
+@:native("THREE.ParticleCanvasMaterial")
+extern class ParticleCanvasMaterial extends Material {
+    public var color : Color;
+    public var program : Dynamic->Color->Void;
+    /**
+     * @author mr.doob / http://mrdoob.com/
+     *
+     * parameters = {
+     *  color: <hex>,
+     *  program: <function>(context, color),
+     *  opacity: <float>,
+     *  blending: THREE.NormalBlending
+     * }
+     */
+    public function new(?parameters:Dynamic) : Void;
+}
+
+@:native("THREE.ParticleDOMMaterial")
+extern class ParticleDOMMaterial extends Material {
+    public var domElement : js.Dom.HtmlDom;
+    public function new(el:js.Dom.HtmlDom) : Void;
 }
 
 @:native("THREE.ShaderMaterial")
@@ -743,16 +787,15 @@ extern class ShaderMaterial extends Material {
     public var fragmentShader : String;
     public var vertexShader : String;
     public var uniforms : Dynamic;
-    public var shading : Int;
+    public var attributes : Dynamic;
+    public var shading : Int; // Shading.Smooth
     public var wireframe : Bool;
     public var wireframeLinewidth : Float;
-    public var wireframeLinecap : String;
-    public var wireframeLinejoin : String;
+    public var fog : Bool;
+    public var lights : Bool;
     public var vertexColors : Bool;
     public var skinning : Bool;
     public var morphTargets : Bool;
-    public var fog : Bool;
-    public var lights : Bool;
     /**
      * @author alteredq / http://alteredqualia.com/
      *
@@ -775,41 +818,7 @@ extern class ShaderMaterial extends Material {
      *  morphTargets: <bool>,
      * }
      */
-    public function new(parameters:Dynamic) : Void;
-}
-
-@:native("THREE.ParticleBasicMaterial")
-extern class ParticleBasicMaterial extends Material {
-    public var color : Color;
-    public var map : Texture;
-    public var size : Float;
-    public var sizeAttenuation : Bool;
-    public var vertexColors : Bool;
-    public var fog : Bool;
-    public function new(parameters:Dynamic) : Void;
-}
-
-@:native("THREE.ParticleCanvasMaterial")
-extern class ParticleCanvasMaterial extends Material {
-    public var color : Color;
-    public var program : Dynamic->Color->Void;
-    /**
-     * @author mr.doob / http://mrdoob.com/
-     *
-     * parameters = {
-     *  color: <hex>,
-     *  program: <function>,
-     *  opacity: <float>,
-     *  blending: THREE.NormalBlending
-     * }
-     */
-    public function new(parameters:Dynamic) : Void;
-}
-
-@:native("THREE.ParticleDOMMaterial")
-extern class ParticleDOMMaterial extends Material {
-    public var domElement : js.Dom.HtmlDom;
-    public function new(el:js.Dom.HtmlDom) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
 interface Mapping {}
@@ -855,34 +864,43 @@ extern class ImageUtils {
     public static function loadTextureCube(array:Array<String>, mapping:Int, cb:js.Dom.Image->Void) : Texture;
 }
 
-// TODO
-extern class MultiplyOperation {} // = 0
-extern class MixOperation {} // = 1
+class Operation {
+    public static inline var Multiply = 0;
+    public static inline var Mix = 1;
+}
 
-extern class RepeatWrapping {} // = 0
-extern class ClampToEdgeWrapping {} // = 1
-extern class MirroredRepeatWrapping {} // = 2
+class Wrapping {
+    public static inline var Repeat = 0;
+    public static inline var ClampToEdge = 1;
+    public static inline var MirroredRepeat = 2;
+}
 
-extern class NearestFilter {} // = 3
-extern class NearestMipMapNearestFilter {} // = 4
-extern class NearestMipMapLineaFilter {} // = 5
-extern class LinearFilter {} // = 6
-extern class LinearMipMapNearestFilter {} // = 7
-extern class LinearMipMapLinearFilter {} // = 8
+class Filter {
+    public static inline var Nearest = 3;
+    public static inline var NearestMipMapNearest = 4;
+    public static inline var NearestMipMapLinear = 5;
+    public static inline var Linear = 6;
+    public static inline var LinearMipMapNearest = 7;
+    public static inline var LinearMipMapLinear = 8;
+}
 
-extern class ByteType {} // 9
-extern class UnsignedByteType {} // 10
-extern class ShortType {} // 11
-extern class UnsignedShortType {} // 12
-extern class IntType {} // 13
-extern class UnsignedIntType {} // 14
-extern class FloatType {} // 15
+class Type {
+    public static inline var Byte = 9;
+    public static inline var UnsignedByte = 10;
+    public static inline var Short = 11;
+    public static inline var UnsignedShort = 12;
+    public static inline var Int = 13;
+    public static inline var UnsignedInt = 14;
+    public static inline var Float = 15;
+}
 
-extern class AlphaFormat {} // 16
-extern class RGBFormat {} // 17
-extern class RGBAFormat {} // 18
-extern class LuminanceFormat {} // 19
-extern class LuminanceAlphaFormat {} // 20
+class Format {
+    public static inline var Alpha = 16;
+    public static inline var RGB = 17;
+    public static inline var RGBA = 18;
+    public static inline var Luminance = 19;
+    public static inline var LuminanceAlpha = 20;
+}
 
 @:native("THREE.Bone")
 extern class Bone extends Object3D {
@@ -896,17 +914,19 @@ extern class Bone extends Object3D {
 extern class Line extends Object3D {
     public var geometry : Geometry;
     public var materials : Material;
-    public var type : Int;
-    public function new(geometry:Geometry, material:Material, type:Int) : Void;
+    public var type : Int; // LineType.Strip
+    public function new(geometry:Geometry, material:Material, ?type:Int) : Void;
 }
-// TODO
-extern class LineStrip {} // 0
-extern class Pieces {} // 1
+
+class LineType {
+    public static inline var Strip = 0;
+    public static inline var Pieces = 1;
+}
 
 @:native("THREE.LOD")
 extern class LOD extends Object3D {
     public var LODs : Array<{ visibleAtDistance:Float, object3D:Object3D }>;
-    public function addLevel(o:Object3D, visibleAtDistance:Float=0.0) : Void;
+    public function addLevel(o:Object3D, ?visibleAtDistance:Float=0.0) : Void;
     public function update(camera:Camera) : Void;
 }
 
@@ -954,7 +974,6 @@ extern class SkinnedMesh extends Mesh {
     public var bonesMatrices : Float32Array;
     public function addBone(bone:Bone) : Bone;
     public function pose() : Void;
-    public function updateMatrixWorld(force:Bool) : Void;
 }
 
 @:native("THREE.Scene")

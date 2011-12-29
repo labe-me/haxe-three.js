@@ -128,21 +128,36 @@ CLOSED: [2011-12-29 Thu 18:53]
 CLOSED: [2011-12-29 Thu 18:57]
 ** DONE ./materials/LineBasicMaterial.js
 CLOSED: [2011-12-29 Thu 18:59]
-** TODO ./materials/MeshBasicMaterial.js
-** TODO ./materials/MeshDepthMaterial.js
-** TODO ./materials/MeshFaceMaterial.js
-** TODO ./materials/MeshLambertMaterial.js
-** TODO ./materials/MeshNormalMaterial.js
-** TODO ./materials/MeshPhongMaterial.js
-** TODO ./materials/MeshShaderMaterial.js
-** TODO ./materials/ParticleBasicMaterial.js
-** TODO ./materials/ParticleCanvasMaterial.js
-** TODO ./materials/ParticleDOMMaterial.js
-** TODO ./materials/ShaderMaterial.js
-** TODO ./objects/Bone.js
-** TODO ./objects/Line.js
-** TODO ./objects/LOD.js
-** TODO ./objects/Mesh.js
+** DONE ./materials/MeshBasicMaterial.js
+CLOSED: [2011-12-29 Thu 21:12]
+** DONE ./materials/MeshDepthMaterial.js
+CLOSED: [2011-12-29 Thu 21:13]
+** DONE ./materials/MeshFaceMaterial.js
+CLOSED: [2011-12-29 Thu 21:14]
+** DONE ./materials/MeshLambertMaterial.js
+CLOSED: [2011-12-29 Thu 21:18]
+** DONE ./materials/MeshNormalMaterial.js
+CLOSED: [2011-12-29 Thu 21:19]
+** DONE ./materials/MeshPhongMaterial.js
+CLOSED: [2011-12-29 Thu 21:22]
+** DONE ./materials/MeshShaderMaterial.js
+CLOSED: [2011-12-29 Thu 21:23]
+** DONE ./materials/ParticleBasicMaterial.js
+CLOSED: [2011-12-29 Thu 22:09]
+** DONE ./materials/ParticleCanvasMaterial.js
+CLOSED: [2011-12-29 Thu 22:10]
+** DONE ./materials/ParticleDOMMaterial.js
+CLOSED: [2011-12-29 Thu 22:11]
+** DONE ./materials/ShaderMaterial.js
+CLOSED: [2011-12-29 Thu 22:13]
+** DONE ./objects/Bone.js
+CLOSED: [2011-12-29 Thu 22:22]
+** DONE ./objects/Line.js
+CLOSED: [2011-12-29 Thu 22:24]
+** DONE ./objects/LOD.js
+CLOSED: [2011-12-29 Thu 22:25]
+** DONE ./objects/Mesh.js
+CLOSED: [2011-12-29 Thu 22:26]
 ** TODO ./objects/MorphAnimMesh.js
 ** TODO ./objects/Particle.js
 ** TODO ./objects/ParticleSystem.js
