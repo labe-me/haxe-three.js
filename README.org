@@ -18,3 +18,152 @@ Laurent
 ** TODO Embed three.js javascript (see haxe/std/js/JQuery.__init__)
 ** TODO Integrate requestAnimationFrame
 ** TODO Put on haxelib
+** DONE ./Three.js
+CLOSED: [2011-12-29 Thu 15:00]
+** DONE ./cameras/Camera.js
+CLOSED: [2011-12-29 Thu 15:02]
+** DONE ./cameras/OrthographicCamera.js
+CLOSED: [2011-12-29 Thu 15:04]
+** DONE ./cameras/PerspectiveCamera.js
+CLOSED: [2011-12-29 Thu 15:07]
+** DONE ./core/Clock.js
+CLOSED: [2011-12-29 Thu 15:10]
+** DONE ./core/Color.js
+CLOSED: [2011-12-29 Thu 15:14]
+** DONE ./core/Edge.js
+CLOSED: [2011-12-29 Thu 15:14]
+** DONE ./core/Face3.js
+CLOSED: [2011-12-29 Thu 16:03]
+** DONE ./core/Face4.js
+CLOSED: [2011-12-29 Thu 17:27]
+** DONE ./core/Geometry.js
+CLOSED: [2011-12-29 Thu 17:32]
+** DONE ./core/Math.js
+CLOSED: [2011-12-29 Thu 17:35]
+** DONE ./core/Matrix3.js
+CLOSED: [2011-12-29 Thu 17:36]
+** DONE ./core/Matrix4.js
+CLOSED: [2011-12-29 Thu 17:50]
+** DONE ./core/Object3D.js
+CLOSED: [2011-12-29 Thu 17:57]
+** DONE ./core/Projector.js
+CLOSED: [2011-12-29 Thu 18:01]
+** DONE ./core/Quaternion.js
+CLOSED: [2011-12-29 Thu 18:04]
+** DONE ./core/Ray.js
+CLOSED: [2011-12-29 Thu 18:05]
+** DONE ./core/Rectangle.js
+CLOSED: [2011-12-29 Thu 18:07]
+** DONE ./core/Spline.js
+CLOSED: [2011-12-29 Thu 18:34]
+** DONE ./core/UV.js
+CLOSED: [2011-12-29 Thu 18:37]
+** DONE ./core/Vector2.js
+CLOSED: [2011-12-29 Thu 18:40]
+** DONE ./core/Vector3.js
+CLOSED: [2011-12-29 Thu 18:42]
+** DONE ./core/Vector4.js
+CLOSED: [2011-12-29 Thu 18:44]
+** DONE ./core/Vertex.js
+CLOSED: [2011-12-29 Thu 18:45]
+** TODO ./extras/animation/Animation.js
+** TODO ./extras/animation/AnimationHandler.js
+** TODO ./extras/animation/AnimationMorphTarget.js
+** TODO ./extras/cameras/CombinedCamera.js
+** TODO ./extras/cameras/CubeCamera.js
+** TODO ./extras/cameras/FirstPersonCamera.js
+** TODO ./extras/cameras/FlyCamera.js
+** TODO ./extras/cameras/PathCamera.js
+** TODO ./extras/cameras/RollCamera.js
+** TODO ./extras/cameras/TrackballCamera.js
+** TODO ./extras/ColorUtils.js
+** TODO ./extras/controls/FirstPersonControls.js
+** TODO ./extras/controls/FlyControls.js
+** TODO ./extras/controls/PathControls.js
+** TODO ./extras/controls/RollControls.js
+** TODO ./extras/controls/TrackballControls.js
+** TODO ./extras/core/Curve.js
+** TODO ./extras/core/CurvePath.js
+** TODO ./extras/core/Path.js
+** TODO ./extras/core/Shape.js
+** TODO ./extras/core/TextPath.js
+** TODO ./extras/geometries/CubeGeometry.js
+** TODO ./extras/geometries/CylinderGeometry.js
+** TODO ./extras/geometries/ExtrudeGeometry.js
+** TODO ./extras/geometries/IcosahedronGeometry.js
+** TODO ./extras/geometries/LatheGeometry.js
+** TODO ./extras/geometries/OctahedronGeometry.js
+** TODO ./extras/geometries/PlaneGeometry.js
+** TODO ./extras/geometries/SphereGeometry.js
+** TODO ./extras/geometries/TextGeometry.js
+** TODO ./extras/geometries/TorusGeometry.js
+** TODO ./extras/geometries/TorusKnotGeometry.js
+** TODO ./extras/GeometryUtils.js
+** TODO ./extras/ImageUtils.js
+** TODO ./extras/loaders/BinaryLoader.js
+** TODO ./extras/loaders/ColladaLoader.js
+** TODO ./extras/loaders/JSONLoader.js
+** TODO ./extras/loaders/Loader.js
+** TODO ./extras/loaders/SceneLoader.js
+** TODO ./extras/loaders/UTF8Loader.js
+** TODO ./extras/modifiers/SubdivisionModifier.js
+** TODO ./extras/objects/Axes.js
+** TODO ./extras/objects/MarchingCubes.js
+** TODO ./extras/renderers/AnaglyphWebGLRenderer.js
+** TODO ./extras/renderers/CrosseyedWebGLRenderer.js
+** TODO ./extras/renderers/ParallaxBarrierWebGLRenderer.js
+** TODO ./extras/SceneUtils.js
+** TODO ./extras/ShaderUtils.js
+** DONE ./lights/AmbientLight.js
+CLOSED: [2011-12-29 Thu 18:47]
+** DONE ./lights/DirectionalLight.js
+CLOSED: [2011-12-29 Thu 18:48]
+** DONE ./lights/Light.js
+CLOSED: [2011-12-29 Thu 18:49]
+** DONE ./lights/PointLight.js
+CLOSED: [2011-12-29 Thu 18:50]
+** DONE ./lights/SpotLight.js
+CLOSED: [2011-12-29 Thu 18:53]
+** DONE ./materials/Material.js
+CLOSED: [2011-12-29 Thu 18:57]
+** DONE ./materials/LineBasicMaterial.js
+CLOSED: [2011-12-29 Thu 18:59]
+** TODO ./materials/MeshBasicMaterial.js
+** TODO ./materials/MeshDepthMaterial.js
+** TODO ./materials/MeshFaceMaterial.js
+** TODO ./materials/MeshLambertMaterial.js
+** TODO ./materials/MeshNormalMaterial.js
+** TODO ./materials/MeshPhongMaterial.js
+** TODO ./materials/MeshShaderMaterial.js
+** TODO ./materials/ParticleBasicMaterial.js
+** TODO ./materials/ParticleCanvasMaterial.js
+** TODO ./materials/ParticleDOMMaterial.js
+** TODO ./materials/ShaderMaterial.js
+** TODO ./objects/Bone.js
+** TODO ./objects/Line.js
+** TODO ./objects/LOD.js
+** TODO ./objects/Mesh.js
+** TODO ./objects/MorphAnimMesh.js
+** TODO ./objects/Particle.js
+** TODO ./objects/ParticleSystem.js
+** TODO ./objects/Ribbon.js
+** TODO ./objects/SkinnedMesh.js
+** TODO ./objects/Sprite.js
+** TODO ./renderers/CanvasRenderer.js
+** TODO ./renderers/DOMRenderer.js
+** TODO ./renderers/renderables/RenderableFace3.js
+** TODO ./renderers/renderables/RenderableFace4.js
+** TODO ./renderers/renderables/RenderableLine.js
+** TODO ./renderers/renderables/RenderableObject.js
+** TODO ./renderers/renderables/RenderableParticle.js
+** TODO ./renderers/renderables/RenderableVertex.js
+** TODO ./renderers/SVGRenderer.js
+** TODO ./renderers/WebGLRenderer.js
+** TODO ./renderers/WebGLRenderTarget.js
+** TODO ./renderers/WebGLRenderTargetCube.js
+** TODO ./renderers/WebGLShaders.js
+** TODO ./scenes/Fog.js
+** TODO ./scenes/FogExp2.js
+** TODO ./scenes/Scene.js
+** TODO ./textures/DataTexture.js
+** TODO ./textures/Texture.js

@@ -1,53 +1,68 @@
 package js.three;
 
+typedef Int32Array = Array<Int>;
+typedef Float32Array = Array<Float>;
+
+// Deprecated? If so, replace with "interface Camera"
 @:native("THREE.Camera")
 extern class Camera extends Object3D {
     public function new() : Void;
     public var matrixWorldInverse : Matrix4;
     public var projectionMatrix : Matrix4;
-    public function update(parentMatrixWorld:Matrix4, forceUpdate:Bool, camera:Camera) : Void;
+    public var projectionMatrixInverse : Matrix4;
     public function lookAt(target:Vector3) : Void;
 }
 
 @:native("THREE.PerspectiveCamera")
 extern class PerspectiveCamera extends Camera {
-    public function new(fov:Float, aspect:Float, near:Float, far:Float) : Void;
+    public function new(?fov:Float, ?aspect:Float, ?near:Float, ?far:Float) : Void;
     public var fov : Float;
     public var aspect : Float;
     public var near : Float;
     public var far : Float;
+    public function setLens(focalLength:Float, ?frameSize:Float) : Void;
     public function updateProjectionMatrix() : Void;
 }
 
 @:native("THREE.OrthographicCamera")
 extern class OrthographicCamera extends Camera {
-    public function new(left:Float, right:Float, top:Float, bottom:Float, near:Float, far:Float) : Void;
+    public function new(left:Float, right:Float, top:Float, bottom:Float, ?near:Float, ?far:Float) : Void;
     public var left : Float;
     public var right : Float;
     public var top : Float;
     public var bottom : Float;
     public var near : Float;
     public var far : Float;
-    public function updateProjectionMatrix():Void;
+    public function updateProjectionMatrix() : Void;
 }
 
-@:native("THREE.TrackballCamera")
-extern class TrackballCamera extends Camera {
-    public function new(params:Dynamic) : Void; // (documented in extras/cameras/TrackballCamera.js)
+@:native("THREE.Clock")
+extern class Clock {
+    public function new(autoStart:Bool=true) : Void;
+    public var startTime : Float;
+    public var oldTime : Float;
+    public var elapsedTime : Float;
+    public var running : Bool;
+    public function start() : Void;
+    public function stop() : Void;
+    public function getElapsedTime() : Float;
+    public function getDelta() : Float;
 }
 
 @:native("THREE.Color")
 extern class Color {
-    public function new(hex:Float) : Void;
+    public function new(?hex:Int) : Void;
     public var r : Float;
     public var g : Float;
     public var b : Float;
-    public function copy(color:Color) : Void;
-    public function setRGB(r:Float, g:Float, b:Float) : Void;
-    public function setHSV(h:Float, s:Float, v:Float) : Void;
-    public function setHex(hex:Int) : Void;
+    public function copy(color:Color) : Color;
+    public function copyCammaToLinear(color:Color) : Color;
+    public function copyLinearToGamma(color:Color) : Color;
+    public function setRGB(r:Float, g:Float, b:Float) : Color;
+    public function setHSV(h:Float, s:Float, v:Float) : Color;
+    public function setHex(hex:Int) : Color;
     public function getHex() : Int;
-    public function getContextStyle() : Dynamic; //?
+    public function getContextStyle() : String; // "rgb(r,g,b)"
     public function clone() : Color;
 }
 
@@ -65,14 +80,18 @@ extern class Face3 {
     public var a : Float;
     public var b : Float;
     public var c : Float;
+
     public var normal : Vector3;
     public var vertexNormals : Array<Vector3>; // [ <THREE.Vector3>, <THREE.Vector3>, <THREE.Vector3> ];
     public var color : Color;
     public var vertexColors : Array<Color>; // [ :Color, :Color, :Color ];
     public var vertexTangents : Array<Vector3>;
-    public var materials : Array<Material>;
+    public var materialIndex : Int;
     public var centroid : Vector3;
-    public function new(a:Float, b:Float, c:Float, normal:Vector3, color:Color, materials:Array<Material>) : Void;
+    @:overload(function(a:Float, b:Float, c:Float, ?vertexNormals:Array<Vector3>, ?color:Color, materialIndex:Int):Void {})
+    @:overload(function(a:Float, b:Float, c:Float, ?vertexNormals:Array<Vector3>, ?vertexColors:Array<Color>, materialIndex:Int):Void {})
+    @:overload(function(a:Float, b:Float, c:Float, ?normal:Vector3, ?vertexColors:Array<Color>, materialIndex:Int) : Void {})
+    public function new(a:Float, b:Float, c:Float, ?normal:Vector3, ?color:Color, materialIndex:Int) : Void;
 }
 
 @:native("THREE.Face4")
@@ -81,36 +100,54 @@ extern class Face4 {
     public var b : Float;
     public var c : Float;
     public var d : Float;
-    public var vertexNormals : Array<Vector3>; // [ <THREE.Vector3>, <THREE.Vector3>, <THREE.Vector3>, <THREE.Vector3> ];
+
+    public var normal : Vector3;
+    public var vertexNormals : Array<Vector3>; // [ <THREE.Vector3>, <THREE.Vector3>, <THREE.Vector3> ];
     public var color : Color;
-    public var vertexColors : Array<Color>; // [ :Color, :Color, :Color, :Color ];
+    public var vertexColors : Array<Color>; // [ :Color, :Color, :Color ];
     public var vertexTangents : Array<Vector3>;
-    public var materials : Array<Material>;
+    public var materialIndex : Int;
     public var centroid : Vector3;
-    public function new(a:Float, b:Float, c:Float, d:Float, normal:Vector3, color:Color, materials:Array<Material>) : Void;
+    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?vertexNormals:Array<Vector3>, ?color:Color, materialIndex:Int):Void {})
+    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?vertexNormals:Array<Vector3>, ?vertexColors:Array<Color>, materialIndex:Int):Void {})
+    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?normal:Vector3, ?vertexColors:Array<Color>, materialIndex:Int) : Void {})
+    public function new(a:Float, b:Float, c:Float, d:Float, ?normal:Vector3, ?color:Color, materialIndex:Int) : Void;
 }
 
 @:native("THREE.Geometry")
 extern class Geometry {
-    public var id : String;
+    public var id : Int;
     public var vertices : Array<Vertex>;
     public var colors : Array<Color>;
+    public var materials : Array<Material>;
     public var faces : Array<Face4>;
     public var faceUvs : Array<Array<UV>>;
     public var faceVertexUvs : Array<Array<UV>>;
     public var morphTargets : Array<{name:String, vertices:Array<Vertex>}>;
+    public var morphColors : Array<Color>;
     public var skinWeights : Array<Vector4>;
     public var skinIndices : Array<Vector4>;
     public var boundingBox : { x:Array<Float>, y:Array<Float>, z:Array<Float> };
     public var boundingSphere : { radius:Float };
     public var hasTangents : Bool;
+    // public var dynamic : Bool; // unless set to true the *Arrays will be deleted once sent to a buffer.
     public function new() : Void;
+    public function applyMatrix(matrix:Matrix4) : Void;
     public function computeCentroids() : Void;
-    public function computeFaceNormals(userVertexNormals:Bool) : Void;
+    public function computeFaceNormals() : Void;
     public function computeVertexNormals() : Void;
     public function computeTangents() : Void;
     public function computeBoundingBox() : Void;
     public function computeBoundingSphere() : Void;
+    public function mergeVertices() : Void;
+}
+
+@:native("THREE.Math")
+extern class Math {
+    public static function clamp(x:Float, a:Float, b:Float) : Float;
+    public static function clampBottom(x:Float, a:Float) : Float;
+    public static function mapLinear(x:Float, a1:Float, a2:Float, b1:Float, b2:Float) : Float;
+    public static function random16() : Float;
 }
 
 @:native("THREE.Matrix3")
@@ -141,19 +178,21 @@ extern class Matrix4 {
     public var n44 : Float;
     public var flat : Array<Float>;
     public var m33 : Matrix3;
+    @:overload(function() : Void {})
+    @:overload(function(?n11:Float, ?n12:Float, ?n13:Float, ?n14:Float, ?n21:Float, ?n22:Float, ?n23:Float, ?n24:Float, ?n31:Float, ?n32:Float, ?n33:Float, ?n34:Float, ?n41:Float, ?n42:Float, ?n43:Float, ?n44:Float) : Void {})
     public function new(n11:Float, n12:Float, n13:Float, n14:Float, n21:Float, n22:Float, n23:Float, n24:Float, n31:Float, n32:Float, n33:Float, n34:Float, n41:Float, n42:Float, n43:Float, n44:Float) : Void;
     public function set(n11:Float, n12:Float, n13:Float, n14:Float, n21:Float, n22:Float, n23:Float, n24:Float, n31:Float, n32:Float, n33:Float, n34:Float, n41:Float, n42:Float, n43:Float, n44:Float) : Matrix4;
     public function identity() : Matrix4;
     public function copy(m:Matrix4) : Matrix4;
     public function lookAt(eye:Vector3, center:Vector3, up:Vector3) : Matrix4;
+    public function multiply(a:Matrix4, b:Matrix4) : Matrix4;
+    public function multiplySelf(m:Matrix4) : Matrix4;
+    public function multiplyToArray(a:Matrix4, b:Matrix4, r:Array<Float>) : Matrix4;
+    public function multiplyScalar(s:Float) : Matrix4;
     public function multiplyVector3(v:Vector3) : Vector3;
     public function multiplyVector4(v:Vector4) : Vector4;
     public function rotateAxis(v:Vector3) : Vector3;
     public function crossVector(a:Vector4) : Vector4;
-    public function multiply(a:Matrix4, b:Matrix4) : Matrix4;
-    public function multiplyToArray(a:Matrix4, b:Matrix4, r:Array<Float>) : Matrix4;
-    public function multiplySelf(m:Matrix4) : Matrix4;
-    public function multiplyScalar(s:Float) : Matrix4;
     public function determinant() : Float;
     public function transpose() : Matrix4;
     public function clone() : Matrix4;
@@ -167,9 +206,17 @@ extern class Matrix4 {
     public function setRotationZ(theta:Float) : Matrix4;
     public function setRotationAxis(axis:Vector3, angle:Float) : Matrix4;
     public function setPosition(v:Vector3) : Matrix4;
-    public function setRotationFromEuler(v:Vector3) : Matrix4;
-    public function setRotationFromQuaternion(v:Quaternion) : Matrix4;
+    public function getPosition() : Vector3;
+    public function getColumnX() : Vector3;
+    public function getColumnY() : Vector3;
+    public function getColumnZ() : Vector3;
+    public function getInverse(m:Matrix4) : Matrix4;
+    // order = 'YXZ', 'ZXY', 'ZYX', 'YZX', 'XZY', default='XYZ'
+    public function setRotationFromEuler(v:Vector3, ?order:String) : Matrix4;
+    public function setRotationFromQuaternion(q:Quaternion) : Matrix4;
     public function scale(v:Vector3) : Matrix4;
+    public function compose(translation:Vector3, rotation:Quaternion, scale:Vector3) : Matrix4;
+    public function decompose(?translation:Vector3, ?rotation:Quaternion, ?scale:Vector3) : Array<Dynamic>; // [translation, rotation, scale]
     public function extractPosition(m:Matrix4) : Matrix4;
     public function extractRotation(m:Matrix4, s:Float) : Matrix4;
     //public static function makeInvert(m1:Matrix4, m2:Matrix4);
@@ -182,18 +229,19 @@ extern class Matrix4 {
 @:native("THREE.Object3D")
 extern class Object3D {
     public var name : String;
-    public var id : Float;
+    public var id : Int;
     public var parent : Object3D;
-    public var children : Object3D;
+    public var children : Array<Object3D>;
     public var up : Vector3;
     public var position : Vector3;
     public var rotation : Vector3;
     public var eulerOrder : String;
     public var scale : Vector3;
-    //TODO: public var dynamic : Bool;
+    //TODO: public var dynamic : Bool; // when true it retains arrays so they can be updated with __dirty*
     public var doubleSided : Bool;
     public var flipSided : Bool;
-    public var renderDepth : Float;
+    public var renderDepth : Float; // set to null by default
+    public var rotationAutoUpdate : Bool;
     public var matrix : Matrix4;
     public var matrixWorld : Matrix4;
     public var matrixRotationWorld : Matrix4;
@@ -204,9 +252,33 @@ extern class Object3D {
     public var boundRadius : Float;
     public var boundRadiusScale : Float;
     public var visible : Bool;
+    public var castShadow : Bool;
+    public var receiveShadow : Bool;
+    public var frustumCulled : Bool;
+    public function new() : Void;
+    public function translate(distance:Float, axis:Vector3) : Void;
+    public function translateX(distance:Float) : Void;
+    public function translateY(distance:Float) : Void;
+    public function translateZ(distance:Float) : Void;
+    public function lookAt(vector:Vector3) : Void;
     public function add(o:Object3D) : Void;
     public function remove(o:Object3D) : Void;
+    public function getChildByName(name:String, ?doRecurse:Bool=false) : Object3D;
     public function updateMatrix() : Void;
+    public function updateMatrixWorld(force:Bool=false) : Void;
+}
+
+@:native("THREE.Projector")
+extern class Projector {
+    public function new() : Void;
+    public function computeFrustum(m:Matrix4) : Void;
+    public function projectVector(vector:Vector3, camera:Camera) : Void;
+    public function unprojectVector(vector:Vector3, camera:Camera) : Vector3;
+    public function pickingRay(vector:Vector3, camera:Camera) : Ray;
+    public function projectGraph(root:Object3D, sort:Bool) : Dynamic; // returns _renderData
+    public function projectScene(scene:Scene, camera:Camera, sort:Bool) : Dynamic; // returns _renderData
+    public function isInFrustum(o:Object3D) : Bool;
+    // More methods there
 }
 
 @:native("THREE.Quaternion")
@@ -216,12 +288,16 @@ extern class Quaternion {
     public var z : Float;
     public var w : Float;
     public function set(x:Float, y:Float, z:Float, w:Float) : Quaternion;
+    public function copy(q:Quaternion) : Quaternion;
     public function setFromEuler(v:Vector3) : Quaternion;
+    public function setFromAxisAngle(axis:Vector3, angle:Float) : Quaternion;
+    public function setFromRotationMatrix(m:Matrix) : Quaternion;
     public function calculateW() : Quaternion;
     public function inverse() : Quaternion;
     public function length() : Float;
     public function normalize() : Quaternion;
     public function multiplySelf(q:Quaternion) : Quaternion;
+    public function multiply(q1:Quaternion, q2:Quaternion) : Quaternion;
     public function multiplyVector3(vec:Vector3, dest:Vector3) : Vector3;
     public static function slerp(qa:Quaternion, qb:Quaternion, qm:Quaternion, t:Float) : Quaternion;
 }
@@ -230,6 +306,7 @@ extern class Quaternion {
 extern class Ray {
     public var origin : Vector3;
     public var direction : Vector3;
+    public function new(?origin:Vector3, ?direction:Vector3) : Void;
     public function intersectScene(scene:Scene) : Array<Object3D>;
     public function intersectObjects(objects:Array<Object3D>) : Array<Object3D>;
     public function intersectObject(object:Object3D) : Array<Object3D>;
@@ -247,8 +324,8 @@ extern class Rectangle {
     public function getRight() : Float;
     public function getBottom() : Float;
     public function set(left:Float, top:Float, right:Float, bottom:Float) : Void;
-    public function addPoint() : Void;
-    public function add3Points() : Void;
+    public function addPoint(x:Float, y:Float) : Void;
+    public function add3Points(x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float) : Void;
     public function addRectangle(r:Rectangle) : Void;
     public function inflate(v:Float) : Void;
     public function minSelf(r:Rectangle) : Void;
@@ -257,10 +334,23 @@ extern class Rectangle {
     public function isEmpty() : Bool;
 }
 
+@:native("THREE.Spline")
+extern class Spline {
+    public var points : Array<{x:Float, y:Float, z:Float}>;
+    public function new(points:Array<Float>) : Void;
+    public function initFromArray(a:Array<Array<Float>>) : Void;
+    public function getPoint(k:Float) : {x:Float, y:Float, z:Float};
+    public function getControlPointsArray() : Array<Array<Float>>;
+    public function getLength(?nSubDivisions:Int) : { chunks:Array<Float>, total:Float };
+    public function reparametrizeByArcLength(samplingCoef:Float) : Void;
+    public function interpolate(p0:Float, p1:Float, p2:Float, p4:Float, t:Float, t2:Float, t3:Float) : Float;
+}
+
 @:native("THREE.UV")
 extern class UV {
     public var u : Float;
     public var v : Float;
+    public function new(?u:Float, ?v:Float) : Void;
     public function set(u:Float, v:Float) : UV;
     public function copy(uv:UV) : UV;
     public function clone() : UV;
@@ -270,25 +360,25 @@ extern class UV {
 extern class Vector2 {
     public var x : Float;
     public var y : Float;
-    public function new(x:Float, y:Float) : Void;
+    public function new(?x:Float, ?y:Float) : Void;
     public function set(x:Float, y:Float) : Vector2;
     public function copy(v:Vector2) : Vector2;
-    public function addSelf(v:Vector2) : Vector2;
+    public function clone() : Vector2;
     public function add(v1:Vector2, v2:Vector2) : Vector2;
-    public function subSelf(v:Vector2) : Vector2;
+    public function addSelf(v:Vector2) : Vector2;
     public function sub(v1:Vector2, v2:Vector2) : Vector2;
+    public function subSelf(v:Vector2) : Vector2;
     public function multiplyScalar(s:Float) : Vector2;
     public function divideScalar(s:Float) : Vector2;
     public function negate() : Vector2;
     public function dot(v:Vector2) : Float;
     public function lengthSq() : Float;
     public function length() : Float;
+    public function normalize() : Vector2;
     public function distanceTo(v:Vector2) : Float;
     public function distanceToSquared(v:Vector2) : Float;
     public function setLength(l:Float) : Float;
     public function equals(v:Vector2) : Bool;
-    public function clone() : Vector2;
-    public function normalize() : Vector2;
 }
 
 @:native("THREE.Vector3")
@@ -296,7 +386,7 @@ extern class Vector3 {
     public var x : Float;
     public var y : Float;
     public var z : Float;
-    public function new(x:Float, y:Float, z:Float) : Void;
+    public function new(?x:Float, ?y:Float, ?z:Float) : Void;
     public function set(x:Float, y:Float, z:Float) : Vector3;
     public function setX(x:Float) : Vector3;
     public function setY(y:Float) : Vector3;
@@ -335,7 +425,7 @@ extern class Vector4 {
     public var y : Float;
     public var z : Float;
     public var w : Float;
-    public function new(x:Float, y:Float, z:Float, w:Float) : Void;
+    public function new(?x:Float, ?y:Float, ?z:Float, ?w:Float) : Void;
     public function set(x:Float, y:Float, z:Float, w:Float) : Void;
     public function copy(v:Vector4) : Vector4;
     public function clone() : Vector4;
@@ -357,31 +447,41 @@ extern class Vector4 {
 @:native("THREE.Vertex")
 extern class Vertex {
     public var position : Vector3;
-    public function new(p:Vector3) : Void;
+    public function new(?pos:Vector3) : Void;
 }
 
 @:native("THREE.Light")
 extern class Light extends Object3D {
     public var color : Color;
-    public function new(hex:Int) : Void;
+    public function new(hexColor:Int) : Void;
 }
 
 @:native("THREE.AmbientLight")
 extern class AmbientLight extends Light {
+    public function new(hexColor:Int) : Void;
 }
 
 @:native("THREE.DirectionalLight")
 extern class DirectionalLight extends Light {
     public var intensity : Float;
     public var distance : Float;
-    public function new(hex:Int, intensity:Float, distance:Float) : Void;
+    public function new(hexColor:Int, ?intensity:Float, ?distance:Float) : Void;
 }
 
 @:native("THREE.PointLight")
 extern class PointLight extends Light {
     public var intensity : Float;
     public var distance : Float;
-    public function new(hex:Int, intensity:Float, distance:Float) : Void;
+    public function new(hexColor:Int, ?intensity:Float, ?distance:Float) : Void;
+}
+
+@:native("THREE.SpotLight")
+extern class SpotLight extends Light {
+    public var intensity : Float;
+    public var target : Object3D;
+    public var distance : Float;
+    public var castShadow : Bool;
+    public function new(hexColor:Int, ?intensity:Float, ?distance:Float, ?castShadow:Bool) : Void;
 }
 
 @:native("THREE.Material")
@@ -389,7 +489,7 @@ extern class Material {
     public var name : String;
     public var id : Int;
     public var opacity : Float;
-    public var transparent : Float;
+    public var transparent : Bool;
     public var blending : Int;
     public var depthTest : Bool;
     public var depthWrite : Bool;
@@ -398,26 +498,28 @@ extern class Material {
     public var polygonOffsetUnits : Float;
     public var alphaTest : Float;
     public var overdraw : Bool; // Boolean for fixing antialiasing gaps in CanvasRenderer
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
-/*
-// TODO
+class Shading {
+    public static inline var None = 0;
+    public static inline var Flat = 1;
+    public static inline var Smooth = 2;
+}
 
-THREE.NoShading = 0;
-THREE.FlatShading = 1;
-THREE.SmoothShading = 2;
+class Colors {
+    public static inline var NoColors = 0;
+    public static inline var FaceColors = 1;
+    public static inline var VertexColors = 2;
+}
 
-THREE.NoColors = 0;
-THREE.FaceColors = 1;
-THREE.VertexColors = 2;
-
-THREE.NormalBlending = 0;
-THREE.AdditiveBlending = 1;
-THREE.SubtractiveBlending = 2;
-THREE.MultiplyBlending = 3;
-THREE.AdditiveAlphaBlending = 4;
-*/
+class Blending {
+    public static inline var NormalBlending = 0;
+    public static inline var AdditiveBlending = 1;
+    public static inline var SubtractiveBlending = 2;
+    public static inline var MultiplyBlending = 3;
+    public static inline var AdditiveAlphaBlending = 4;
+}
 
 @:native("THREE.LineBasicMaterial")
 extern class LineBasicMaterial extends Material {
@@ -447,7 +549,7 @@ extern class LineBasicMaterial extends Material {
      *  fog: <bool>
      * }
      */
-    public function new(parameters:Dynamic) : Void;
+    public function new(?parameters:Dynamic) : Void;
 }
 
 @:native("THREE.MeshBasicMaterial")
@@ -849,7 +951,7 @@ extern class Ribbon extends Object3D {
 extern class SkinnedMesh extends Mesh {
     public var identityMatrix : Matrix4;
     public var bones : Array<Bone>;
-    //public var bonesMatrices : Float32Array;
+    public var bonesMatrices : Float32Array;
     public function addBone(bone:Bone) : Bone;
     public function pose() : Void;
     public function updateMatrixWorld(force:Bool) : Void;
@@ -880,17 +982,6 @@ extern class FogExp2 {
     public function new(hex:Int, density:Float) : Void;
 }
 
-@:native("THREE.Projector")
-extern class Projector {
-    public function new() : Void;
-    public function computeFrustum(m:Matrix4) : Void;
-    public function projectVector(vector:Vector3, camera:Camera) : Void;
-    public function unprojectVector(vector:Vector3, camera:Camera) : Vector3;
-    public function pickingRay(vector:Vector3, camera:Camera) : Ray;
-    public function projectGraph(root:Object3D, sort:Bool) : Dynamic; // returns _renderData
-    public function projectScene(scene:Scene, camera:Camera, sort:Bool) : Dynamic; // returns _renderData
-    public function isInFrustum(o:Object3D) : Bool;
-}
 
 @:native("THREE.CanvasRenderer")
 extern class CanvasRenderer {
