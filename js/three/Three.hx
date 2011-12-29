@@ -19,6 +19,7 @@ extern class PerspectiveCamera extends Camera {
     public function updateProjectionMatrix() : Void;
 }
 
+@:native("THREE.OrthographicCamera")
 extern class OrthographicCamera extends Camera {
     public function new(left:Float, right:Float, top:Float, bottom:Float, near:Float, far:Float) : Void;
     public var left : Float;
@@ -30,10 +31,12 @@ extern class OrthographicCamera extends Camera {
     public function updateProjectionMatrix():Void;
 }
 
+@:native("THREE.TrackballCamera")
 extern class TrackballCamera extends Camera {
     public function new(params:Dynamic) : Void; // (documented in extras/cameras/TrackballCamera.js)
 }
 
+@:native("THREE.Color")
 extern class Color {
     public function new(hex:Float) : Void;
     public var r : Float;
@@ -48,6 +51,7 @@ extern class Color {
     public function clone() : Color;
 }
 
+@:native("THREE.Edge")
 extern class Edge {
     public var vertices : Array<Vertex>;
     public var vertexIndices : Array<Int>;
@@ -56,6 +60,7 @@ extern class Edge {
     public function new(v1:Vertex, v2:Vertex, vi1:Int, vi2:Int) : Void;
 }
 
+@:native("THREE.Face3")
 extern class Face3 {
     public var a : Float;
     public var b : Float;
@@ -70,6 +75,7 @@ extern class Face3 {
     public function new(a:Float, b:Float, c:Float, normal:Vector3, color:Color, materials:Array<Material>) : Void;
 }
 
+@:native("THREE.Face4")
 extern class Face4 {
     public var a : Float;
     public var b : Float;
@@ -84,6 +90,7 @@ extern class Face4 {
     public function new(a:Float, b:Float, c:Float, d:Float, normal:Vector3, color:Color, materials:Array<Material>) : Void;
 }
 
+@:native("THREE.Geometry")
 extern class Geometry {
     public var id : String;
     public var vertices : Array<Vertex>;
@@ -106,6 +113,7 @@ extern class Geometry {
     public function computeBoundingSphere() : Void;
 }
 
+@:native("THREE.Matrix3")
 extern class Matrix3 {
     public var m : Array<Float>;
     public function new() : Void;
@@ -113,6 +121,7 @@ extern class Matrix3 {
     public function transposeIntoArray(dest:Array<Float>) : Matrix3;
 }
 
+@:native("THREE.Matrix4")
 extern class Matrix4 {
     public var n11 : Float;
     public var n12 : Float;
@@ -170,6 +179,7 @@ extern class Matrix4 {
     public static function makeOrtho(left:Float, right:Float, bottom:Float, top:Float, near:Float, far:Float) : Matrix4;
 }
 
+@:native("THREE.Object3D")
 extern class Object3D {
     public var name : String;
     public var id : Float;
@@ -199,6 +209,7 @@ extern class Object3D {
     public function updateMatrix() : Void;
 }
 
+@:native("THREE.Quaternion")
 extern class Quaternion {
     public var x : Float;
     public var y : Float;
@@ -215,6 +226,7 @@ extern class Quaternion {
     public static function slerp(qa:Quaternion, qb:Quaternion, qm:Quaternion, t:Float) : Quaternion;
 }
 
+@:native("THREE.Ray")
 extern class Ray {
     public var origin : Vector3;
     public var direction : Vector3;
@@ -223,6 +235,7 @@ extern class Ray {
     public function intersectObject(object:Object3D) : Array<Object3D>;
 }
 
+@:native("THREE.Rectangle")
 extern class Rectangle {
     public function resize() : Void;
     public function getX() : Float;
@@ -244,6 +257,7 @@ extern class Rectangle {
     public function isEmpty() : Bool;
 }
 
+@:native("THREE.UV")
 extern class UV {
     public var u : Float;
     public var v : Float;
@@ -252,6 +266,7 @@ extern class UV {
     public function clone() : UV;
 }
 
+@:native("THREE.Vector2")
 extern class Vector2 {
     public var x : Float;
     public var y : Float;
@@ -276,6 +291,7 @@ extern class Vector2 {
     public function normalize() : Vector2;
 }
 
+@:native("THREE.Vector3")
 extern class Vector3 {
     public var x : Float;
     public var y : Float;
@@ -313,6 +329,7 @@ extern class Vector3 {
     public function isZero() : Bool;
 }
 
+@:native("THREE.Vector4")
 extern class Vector4 {
     public var x : Float;
     public var y : Float;
@@ -337,31 +354,37 @@ extern class Vector4 {
     public function lerpSelf(v:Vector4, alpha:Float) : Vector4;
 }
 
+@:native("THREE.Vertex")
 extern class Vertex {
     public var position : Vector3;
     public function new(p:Vector3) : Void;
 }
 
+@:native("THREE.Light")
 extern class Light extends Object3D {
     public var color : Color;
     public function new(hex:Int) : Void;
 }
 
+@:native("THREE.AmbientLight")
 extern class AmbientLight extends Light {
 }
 
+@:native("THREE.DirectionalLight")
 extern class DirectionalLight extends Light {
     public var intensity : Float;
     public var distance : Float;
     public function new(hex:Int, intensity:Float, distance:Float) : Void;
 }
 
+@:native("THREE.PointLight")
 extern class PointLight extends Light {
     public var intensity : Float;
     public var distance : Float;
     public function new(hex:Int, intensity:Float, distance:Float) : Void;
 }
 
+@:native("THREE.Material")
 extern class Material {
     public var name : String;
     public var id : Int;
@@ -379,6 +402,8 @@ extern class Material {
 }
 
 /*
+// TODO
+
 THREE.NoShading = 0;
 THREE.FlatShading = 1;
 THREE.SmoothShading = 2;
@@ -394,6 +419,7 @@ THREE.MultiplyBlending = 3;
 THREE.AdditiveAlphaBlending = 4;
 */
 
+@:native("THREE.LineBasicMaterial")
 extern class LineBasicMaterial extends Material {
     public var color : Color;
     public var linewidth : Float;
@@ -424,6 +450,7 @@ extern class LineBasicMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.MeshBasicMaterial")
 extern class MeshBasicMaterial extends Material {
     public var color : Color;
     public var map : Texture;
@@ -472,6 +499,7 @@ extern class MeshBasicMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.MeshDepthMaterial")
 extern class MeshDepthMaterial extends Material {
     public var shading : Int;
     public var wireframe : Bool;
@@ -535,6 +563,7 @@ extern class MeshLambertMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.MeshNormalMaterial")
 extern class MeshNormalMaterial extends Material {
     public var shading : Int;
     public var wireframe : Bool;
@@ -556,6 +585,7 @@ extern class MeshNormalMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.MeshPhongMaterial")
 extern class MeshPhongMaterial extends Material {
     public var color : Color;
     public var ambient : Color;
@@ -606,6 +636,7 @@ extern class MeshPhongMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.ShaderMaterial")
 extern class ShaderMaterial extends Material {
     public var fragmentShader : String;
     public var vertexShader : String;
@@ -645,6 +676,7 @@ extern class ShaderMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.ParticleBasicMaterial")
 extern class ParticleBasicMaterial extends Material {
     public var color : Color;
     public var map : Texture;
@@ -655,6 +687,7 @@ extern class ParticleBasicMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.ParticleCanvasMaterial")
 extern class ParticleCanvasMaterial extends Material {
     public var color : Color;
     public var program : Dynamic->Color->Void;
@@ -671,25 +704,35 @@ extern class ParticleCanvasMaterial extends Material {
     public function new(parameters:Dynamic) : Void;
 }
 
+@:native("THREE.ParticleDOMMaterial")
 extern class ParticleDOMMaterial extends Material {
     public var domElement : js.Dom.HtmlDom;
     public function new(el:js.Dom.HtmlDom) : Void;
 }
 
 interface Mapping {}
+@:native("THREE.CubeReflectionMapping")
 extern class CubeReflectionMapping implements Mapping {}
+@:native("THREE.CubeRefractionMapping")
 extern class CubeRefractionMapping implements Mapping  {}
+@:native("THREE.LatitudeReflectionMapping")
 extern class LatitudeReflectionMapping implements Mapping  {}
+@:native("THREE.LatitudeRefractionMapping")
 extern class LatitudeRefractionMapping implements Mapping  {}
+@:native("THREE.SphericalReflectionMapping")
 extern class SphericalReflectionMapping implements Mapping  {}
+@:native("THREE.SphericalRefractionMapping")
 extern class SphericalRefractionMapping implements Mapping  {}
+@:native("THREE.UVMapping")
 extern class UVMapping implements Mapping  {}
 
+@:native("THREE.UniformsUtils")
 extern class UniformsUtils {
     public static function merge(a:Array<UniformsUtils>) : Dynamic ;
     public static function clone(a:Dynamic) : Dynamic;
 }
 
+@:native("THREE.Texture")
 extern class Texture {
     public var image : js.Dom.Image;
     public var mapping : Mapping;
@@ -704,11 +747,13 @@ extern class Texture {
     public function clone() : Texture;
 }
 
+@:native("THREE.ImageUtils")
 extern class ImageUtils {
     public static function loadTexture(path:String, mapping:Int, cb:js.Dom.Image->Void) : Texture;
     public static function loadTextureCube(array:Array<String>, mapping:Int, cb:js.Dom.Image->Void) : Texture;
 }
 
+// TODO
 extern class MultiplyOperation {} // = 0
 extern class MixOperation {} // = 1
 
@@ -737,6 +782,7 @@ extern class RGBAFormat {} // 18
 extern class LuminanceFormat {} // 19
 extern class LuminanceAlphaFormat {} // 20
 
+@:native("THREE.Bone")
 extern class Bone extends Object3D {
     public var skin : Bool;
     public var skinMatrix : Matrix4;
@@ -744,15 +790,18 @@ extern class Bone extends Object3D {
     public function update(parentSkinMatrix:Matrix4, forceUpdate:Bool) : Void;
 }
 
+@:native("THREE.Line")
 extern class Line extends Object3D {
     public var geometry : Geometry;
     public var materials : Material;
     public var type : Int;
     public function new(geometry:Geometry, material:Material, type:Int) : Void;
 }
+// TODO
 extern class LineStrip {} // 0
 extern class Pieces {} // 1
 
+@:native("THREE.LOD")
 extern class LOD extends Object3D {
     public var LODs : Array<{ visibleAtDistance:Float, object3D:Object3D }>;
     public function addLevel(o:Object3D, visibleAtDistance:Float=0.0) : Void;
@@ -767,6 +816,7 @@ extern class Mesh extends Object3D {
     public function getMorphTargetIndexByName(name:String) : Int;
 }
 
+@:native("THREE.MorphAnimMesh")
 extern class MorphAnimMesh extends Mesh {
     public var duration : Float; // millis
     public var mirroredLoop : Bool;
@@ -774,11 +824,13 @@ extern class MorphAnimMesh extends Mesh {
     public function updateAnimation(delta:Float) : Void;
 }
 
+@:native("THREE.Particle")
 extern class Particle extends Object3D {
     public var material : Material;
     public function new(material:Material) : Void;
 }
 
+@:native("THREE.ParticleSystem")
 extern class ParticleSystem extends Object3D {
     public var geometry : Geometry;
     public var material : Material;
@@ -786,12 +838,14 @@ extern class ParticleSystem extends Object3D {
     public function new(geometry:Geometry, material:Material) : Void;
 }
 
+@:native("THREE.Ribbon")
 extern class Ribbon extends Object3D {
     public var geometry : Geometry;
     public var material : Material;
     public function new(geometry:Geometry, material:Material) : Void;
 }
 
+@:native("THREE.SkinnedMesh")
 extern class SkinnedMesh extends Mesh {
     public var identityMatrix : Matrix4;
     public var bones : Array<Bone>;
@@ -811,6 +865,7 @@ extern class Scene extends Object3D {
     public function removeObject(o:Object3D) : Void;
 }
 
+@:native("THREE.Fog")
 extern class Fog {
     public var color : Color;
     public var near : Float;
@@ -818,12 +873,14 @@ extern class Fog {
     public function new(hex:Int, near:Float, far:Float) : Void;
 }
 
+@:native("THREE.FogExp2")
 extern class FogExp2 {
     public var color : Color;
     public var density : Float;
     public function new(hex:Int, density:Float) : Void;
 }
 
+@:native("THREE.Projector")
 extern class Projector {
     public function new() : Void;
     public function computeFrustum(m:Matrix4) : Void;
@@ -835,6 +892,7 @@ extern class Projector {
     public function isInFrustum(o:Object3D) : Bool;
 }
 
+@:native("THREE.CanvasRenderer")
 extern class CanvasRenderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
@@ -848,6 +906,7 @@ extern class CanvasRenderer {
     public function render(scene:Scene, camera:Camera) : Void;
 }
 
+@:native("THREE.DOMRenderer")
 extern class DOMRenderer {
     public var domElement : js.Dom.HtmlDom;
     public function new() : Void;
@@ -855,6 +914,7 @@ extern class DOMRenderer {
     public function render(scene:Scene, camera:Camera) : Void;
 }
 
+@:native("THREE.SVGRenderer")
 extern class SVGRenderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
@@ -867,6 +927,7 @@ extern class SVGRenderer {
     public function render(scene:Scene, camera:Camera) : Void;
 }
 
+@:native("THREE.WebGLContext")
 extern class WebGLContext {}
 
 @:native("THREE.WebGLRenderer")
@@ -896,6 +957,7 @@ extern class WebGLRenderer {
     public function deallocateTexture(texture:Texture) : Void;
 }
 
+@:native("THREE.WebGLRenderTarget")
 extern class WebGLRenderTarget {
     public var width : Int;
     public var height : Int;
@@ -913,6 +975,7 @@ extern class WebGLRenderTarget {
     public function clone() : WebGLRenderTarget;
 }
 
+@:native("THREE.Animation")
 extern class Animation {
     public function new(root:Mesh, data:String, interpolationType:Int /* AnimationHandler statics vars */, jitCompile:Bool) : Void;
     public function play(loop:Bool, startTimeMS:Float) : Void;
@@ -921,6 +984,7 @@ extern class Animation {
     public function update(deltaTimeMS: Float) : Void;
 }
 
+@:native("THREE.AnimationHandler")
 extern class AnimationHandler {
     public static var LINEAR = 0;
     public static var CATMULLROM = 1;
@@ -935,6 +999,7 @@ extern class AnimationHandler {
 }
 
 /*
+  @:native("THREE.AnimationMorphTarget")
   extern class AnimationMorphTarget {
     var root ;
     var data ;
@@ -959,14 +1024,17 @@ extern class CubeGeometry extends Geometry {
     public function new(width: Float, height: Float, depth: Float, segmentsWidth: Float, segmentsHeight: Float, segmentsDepth: Float, materials: Array<Material>, sides: Dynamic) : Void;
 }
 
+@:native("THREE.CylinderGeometry")
 extern class CylinderGeometry extends Geometry {
     public function new(radiusTop: Float, radiusBottom: Float, height: Float, segmentsRadius: Float, segmentsHeight: Float, openEnded: Bool) : Void;
 }
 
+@:native("THREE.CurvePath")
 extern class CurvePath {
     // TODO
 }
 
+@:native("THREE.Path")
 extern class Path extends CurvePath {
     public function new(points:Array<Vector2>) : Void;
     public function moveTo(x:Float, y:Float) : Void;
@@ -980,43 +1048,53 @@ extern class Path extends CurvePath {
     public function toShapes() : Array<Shape>;
 }
 
+@:native("THREE.Shape")
 extern class Shape extends Path {
     public function new() : Void;
     public function extrude() : ExtrudeGeometry;
 }
 
+@:native("THREE.ExtrudeGeometry")
 extern class ExtrudeGeometry extends Geometry {
     public function new(shapes:Array<Shape>, options:Dynamic) : Void;
 }
 
+@:native("THREE.IcosahedronGeometry")
 extern class IcosahedronGeometry extends Geometry {
     public function new(subdivisions: Float) : Void;
 }
 
+@:native("THREE.LatheGeometry")
 extern class LatheGeometry extends Geometry {
     public function new(points: Array<Vector3>, steps: Float, angle: Float) : Void;
 }
 
+@:native("THREE.OctahedronGeometry")
 extern class OctahedronGeometry extends Geometry {
     public function new(radius: Float, detail: Float) : Void;
 }
 
+@:native("THREE.PlaneGeometry")
 extern class PlaneGeometry extends Geometry {
     public function new(width:Float, height: Float, segmentsWidth: Float, segmentsHeight: Float) : Void;
 }
 
+@:native("THREE.SphereGeometry")
 extern class SphereGeometry extends Geometry {
     public function new(radius:Float, segmentsWidth:Float, segmentsHeight:Float) : Void;
 }
 
+@:native("THREE.TextGeometry")
 extern class TextGeometry extends Geometry {
     public function new(text:String, parameters:Dynamic) : Void;
 }
 
+@:native("THREE.TorusGeometry")
 extern class TorusGeometry extends Geometry {
     public function new(radius: Float, tube: Float, segmentsR: Float, segmentsT: Float, arc: Float) : Void;
 }
 
+@:native("THREE.TorusKnotGeometry")
 extern class TorusKnotGeometry extends Geometry {
     public function new(radius: Float, tube: Float, segmentsR: Float, segmentsT: Float, p: Float, q: Float, heightScale: Float) : Void;
 }
