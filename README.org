@@ -1,8 +1,20 @@
-* Haxe externs for three.js
-*Not tested nor complete yet.*
-
+#+TITLE: Haxe externs for three.js
+* About
 Work in progress based on three.js (out of date) [[https://github.com/mrdoob/three.js/wiki/API-Reference][API]] and (up to date) [[https://github.com/mrdoob/three.js][source code]].
 
 Please fork and contribute.
 
 Laurent
+* Dev install
+: git clone git@github.com:labe-me/haxe-three.js.git
+: zip -r haxe-three.js.zip haxe-three.js
+: haxelib test haxe-three.js.zip
+: haxelib dev three.js `pwd`/haxe-three.js
+* Usage
+: haxe -lib three.js ...
+* Todo list
+** TODO Test api
+** TODO Set optional parameters optional
+** TODO Embed three.js javascript (see haxe/std/js/JQuery.__init__)
+** TODO Integrate requestAnimationFrame
+** TODO Put on haxelib
