@@ -837,10 +837,21 @@ extern class SphericalRefractionMapping implements Mapping  {}
 @:native("THREE.UVMapping")
 extern class UVMapping implements Mapping  {}
 
+// src/renderers/WebGLShaders.js
 @:native("THREE.UniformsUtils")
 extern class UniformsUtils {
     public static function merge(a:Array<UniformsUtils>) : Dynamic ;
     public static function clone(a:Dynamic) : Dynamic;
+}
+
+// src/renderers/WebGLShaders.js
+@:native("THREE.UniformsLib")
+extern class UniformsLib {
+    public static var common : Dynamic;
+    public static var fog : Dynamic;
+    public static var lights : Dynamic;
+    public static var particle : Dynamic;
+    public static var shadowmap : Dynamic;
 }
 
 @:native("THREE.Texture")
@@ -854,6 +865,8 @@ extern class Texture {
     public var needsUpdate : Bool;
     public var offset : Vector2;
     public var repeat : Vector2;
+    public var needsUpdate : Bool;
+    public var onUpdate : Void -> Void; // TODO: WTF?
     public function new(image:js.Dom.Image, mapping:Mapping, wrapS:Int, wrapT:Int, magFilter:Int, minFilter:Int) : Void;
     public function clone() : Texture;
 }
@@ -976,11 +989,50 @@ extern class SkinnedMesh extends Mesh {
     public function pose() : Void;
 }
 
+@:native("THREE.Sprite")
+extern class Sprite extends Object3D {
+    public var color : Color;
+    public var map : Texture;
+    public var blending : Int; // Blending.Normal
+    public var useScreenCoordinates : Bool;
+    public var mergeWith3D : Bool;
+    public var affectedByDistance : Bool;
+    public var scaleByViewport : Bool;
+    public var alignment : Vector2; // SpriteAlign
+    public var rotation3d : Float;
+    public var opacity : Float;
+    public var uvOffset : Vector2;
+    public var uvScale : Vector2;
+    public function new(parameters:Dynamic) : Void;
+}
+
+class SpriteAlign {
+    public static var topLeft = new Vector2(1, -1);
+    public static var topCenter = new Vector2(0, -1);
+    public static var topRight = new Vector2(-1, -1);
+    public static var centerLeft = new Vector2(1, 0);
+    public static var center = new Vector2(0, 0);
+    public static var centerRight = new Vector2(-1, 0);
+    public static var bottomLeft = new Vector2(1, 1);
+    public static var bottomCenter = new Vector2(0, 1);
+    public static var bottomRight = new Vector2(-1, 1);
+}
+
+// TODO: Find a type for image data :)
+@:native("THREE.DataTexture")
+extern class DataTexture extends Texture {
+    public var image : { data:Dynamic, width:Int, height:Int };
+    public var format : Int; // Format.RGBA
+    public function new(data:Dynamic, width:Int, height:Int, ?format:Int, mapping:Mapping, wrapS:Int, wrapT:Int, magFilter:Int, minFilter:Int) : Void;
+    public function clone() : DataTexture;
+}
+
 @:native("THREE.Scene")
 extern class Scene extends Object3D {
+    public var fog : Fog;
+    public var overrideMaterial : Material; // TODO: ensure type and usefulness
     public var objects : Array<Object3D>;
     public var lights : Array<Light>;
-    public var fog : Fog;
     public function new() : Void;
     public function addObject(o:Object3D) : Void;
     public function removeObject(o:Object3D) : Void;
@@ -991,16 +1043,15 @@ extern class Fog {
     public var color : Color;
     public var near : Float;
     public var far : Float;
-    public function new(hex:Int, near:Float, far:Float) : Void;
+    public function new(hex:Int, ?near:Float, ?far:Float) : Void;
 }
 
 @:native("THREE.FogExp2")
 extern class FogExp2 {
     public var color : Color;
     public var density : Float;
-    public function new(hex:Int, density:Float) : Void;
+    public function new(hex:Int, ?density:Float) : Void;
 }
-
 
 @:native("THREE.CanvasRenderer")
 extern class CanvasRenderer {
@@ -1008,7 +1059,8 @@ extern class CanvasRenderer {
     public var autoClear : Bool;
     public var sortObjects : Bool;
     public var sortElements : Bool;
-    public function new(params:Dynamic) : Void;
+    public var infos : { render:{vertices:Int, faces:Int} };
+    public function new(?parameters:Dynamic) : Void;
     public function setSize(width:Int, height:Int) : Void;
     public function setClearColor(color:Color, opacity:Float) : Void;
     public function setClearColorHex(hex:Int, opacity:Float) : Void;
@@ -1024,12 +1076,20 @@ extern class DOMRenderer {
     public function render(scene:Scene, camera:Camera) : Void;
 }
 
+// TODO? THREE.RenderableFace3
+// TODO? THREE.RenderableFace4
+// TODO? THREE.RenderableLine
+// TODO? THREE.RenderableObject
+// TODO? THREE.RenderableParticle
+// TODO? THREE.RenderableVertex
+
 @:native("THREE.SVGRenderer")
 extern class SVGRenderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
     public var sortObjects : Bool;
     public var sortElements : Bool;
+    public var info : { render:{vertices:Int, faces:Int} };
     public function new() : Void;
     public function setQuality(q:String) : Void; // high / low
     public function setSize(width:Int, height:Int) : Void;
@@ -1038,7 +1098,8 @@ extern class SVGRenderer {
 }
 
 @:native("THREE.WebGLContext")
-extern class WebGLContext {}
+extern class WebGLContext {
+}
 
 @:native("THREE.WebGLRenderer")
 extern class WebGLRenderer {
@@ -1048,23 +1109,46 @@ extern class WebGLRenderer {
     public var autoClearDepth : Bool;
     public var autoClearStencil : Bool;
     public var sortObjects : Bool;
-    public var context : WebGLContext;
-    public function new(parameters:Dynamic) : Void;
-    public function clear(color:Bool, depth:Bool, stencil:Bool) : Void;
-    public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool) : Void;
+    public var autoUpdateObjects : Bool;
+    public var autoUpdateScene : Bool;
+    public var gammaInput : Bool;
+    public var gammaOutput : Bool;
+    public var physicallyBasedShading : Bool;
+    public var shadowMapBias : Float;
+    public var shadowMapDarkness : Float;
+    public var shadowMapWidth : Int;
+    public var shadowMapHeight : Int;
+    public var shadowCameraNear : Float;
+    public var shadowCameraFar : Float;
+    public var shadowCameraFov : Float;
+    public var shadowMap : Array<Texture>; // TODO: ensure type
+    public var shadowMapEnabled : Bool;
+    public var shadowMapAutoUpdate : Bool;
+    public var shadowMapSoft : Bool;
+    public var maxMorphTargets : Int;
+    public var info : {
+        memory:{ programs:Int, geometries:Int, textures:Int },
+        render:{ calls:Int, vertices:Int, faces:Int }
+    };
+    public var context : WebGLContext; // initGL()
+    public function new(?parameters:Dynamic) : Void;
+    public function getContext() : WebGLContext;
+    public function supportsVertexTextures() : Void;
     public function setSize(width:Float, height:Float) : Void;
-    public function setScissor(x:Float, y:Float, width:Float, height:Float) : Void;
     public function setViewport(x:Float, y:Float, width:Float, height:Float) : Void;
+    public function setScissor(x:Float, y:Float, width:Float, height:Float) : Void;
+    public function enableScissorTest(enable:Bool) : Void;
     public function setClearColorHex(hexColor:Float, opacity:Float) : Void;
     public function setClearColor(color:Color, opacity:Float) : Void;
-    public function setFaceCulling(cullFace:String /*[ "front" / "back" ]*/, frontFace:String /*[ "cw" / "ccw" ]*/ ) : Void;
-    public function initMaterial(material:Material, lights:Array<Light>, fog:Fog) : Void;
-    public function initWebGLObjects(scene:Scene) : Void;
-    public function enableScissorTest(enable:Bool) : Void;
-    public function enableDepthBufferWrite(enable:Bool) : Void;
-    public function supportsVertexTextures() : Void;
+    public function getClearColor() : Color;
+    public function getClearAlpha() : Float;
+    public function clear(color:Bool, depth:Bool, stencil:Bool) : Void;
+    public function clearTarget(renderTarget:WebGLRenderTarget, color:Bool, depth:Bool, stencil:Bool) : Void;
     public function deallocateObject(object:Object3D) : Void;
     public function deallocateTexture(texture:Texture) : Void;
+    public function updateShadowMap(scene:Scene, camera:Camera) : Void;
+    public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool) : Void;
+    // There are more methods, mainly private ones
 }
 
 @:native("THREE.WebGLRenderTarget")
@@ -1078,11 +1162,86 @@ extern class WebGLRenderTarget {
     public var offset : Vector2;
     public var repeat : Vector2;
     public var format : Int; // RGBAFormat
-    public var type : Int; // UnsignedByteType
+    public var type : Int; // Type.UnsignedByte
     public var depthBuffer : Bool;
     public var stencilBuffer : Bool;
-    public function new(width:Float, height:Float, options:Dynamic) : Void;
+    public function new(width:Float, height:Float, ?options:Dynamic) : Void;
     public function clone() : WebGLRenderTarget;
+}
+
+@:native("THREE.WebGLRenderTargetCube")
+extern class WebGLRenderTargetCube extends WebGLRenderTarget {
+    var activeCubeFace : Int; // PX 0, NX 1, PY 2, NY 3, PZ 4, NZ 5
+    public function new(width:Float, height:Float, ?options:Dynamic) : Void;
+}
+
+// Not usefull in the API, we may prefer to remove it
+@:native("THREE.ShaderChunk")
+extern class WebGLShaders {
+    // FOG
+    public static var fog_pars_fragment : String;
+    public static var fog_fragment : String;
+    // ENVIRONMENT MAP
+    public static var envmap_pars_fragment : String;
+    public static var envmap_fragment : String;
+    public static var envmap_pars_vertex : String;
+    public static var envmap_vertex : String;
+    // COLOR MAP (particles)
+    public static var map_particle_pars_fragment : String;
+    public static var map_particle_fragment : String;
+    // COLOR MAP (triangles)
+    public static var map_pars_vertex : String;
+    public static var map_pars_fragment : String;
+    public static var map_vertex : String;
+    public static var map_fragment : String;
+    // LIGHT MAP
+    public static var lightmap_pars_fragment : String;
+    public static var lightmap_pars_vertex : String;
+	public static var lightmap_fragment : String;
+	public static var lightmap_vertex : String;
+	// LIGHTS LAMBERT
+	public static var lights_lambert_pars_vertex : String;
+	public static var lights_lambert_vertex : String;
+	// LIGHTS PHONG
+	public static var lights_phong_pars_vertex : String;
+	public static var lights_phong_vertex : String;
+	public static var lights_phong_pars_fragment : String;
+	public static var lights_phong_fragment : String;
+	// VERTEX COLORS
+	public static var color_pars_fragment : String;
+    public static var color_fragment : String;
+	public static var color_pars_vertex : String;
+	public static var color_vertex : String;
+	// SKINNING
+    public static var skinning_pars_vertex : String;
+	public static var skinning_vertex : String;
+	// MORPHING
+	public static var morphtarget_pars_vertex : String;
+	public static var morphtarget_vertex : String;
+	public static var default_vertex : String;
+	// SHADOW MAP
+    public static var shadowmap_pars_fragment : String;
+	public static var shadowmap_fragment : String;
+    public static var shadowmap_pars_vertex : String;
+	public static var shadowmap_vertex : String;
+	// ALPHATEST
+	public static var alphatest_fragment : String;
+	// LINEAR SPACE
+    public static var linear_to_gamma_fragment : String;
+}
+
+// src/renderers/WebGLShaders.js
+// internal, we may want to remove this from the API
+@:native("THREE.ShaderLib")
+extern class ShaderLib {
+    public static var sprite : { vertexShader:String, fragmentShader:String };
+    public static var depth : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var normal : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var basic : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var lambert : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var phong : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var particle_basic : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
+    public static var depthRGBA : { uniforms:Dynamic, vertexShader:String, fragmentShader:String };
 }
 
 @:native("THREE.Animation")
