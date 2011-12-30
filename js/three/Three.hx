@@ -1931,3 +1931,15 @@ extern class ShaderUtils {
         var cube: { uniforms:Dynamic, fragmentShader:String, vertexShader:String };
     };
 }
+
+class Three {
+    private static function __init__() : Void untyped {
+        #if !noEmbedJS
+            #if debug
+            haxe.macro.Tools.includeFile("js/three/three-debug.js");
+            #else
+            haxe.macro.Tools.includeFile("js/three/three-min.js");
+            #end
+        #end
+    }
+}
