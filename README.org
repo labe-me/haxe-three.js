@@ -18,21 +18,6 @@ Laurent
 ** TODO Embed three.js javascript (see haxe/std/js/JQuery.__init__)
 ** TODO Integrate requestAnimationFrame
 ** TODO Put on haxelib
-** TODO ./extras/animation/Animation.js
-** TODO ./extras/animation/AnimationHandler.js
-** TODO ./extras/animation/AnimationMorphTarget.js
-** TODO ./extras/cameras/CombinedCamera.js
-** TODO ./extras/cameras/CubeCamera.js
-** TODO ./extras/cameras/FirstPersonCamera.js
-** TODO ./extras/cameras/FlyCamera.js
-** TODO ./extras/cameras/PathCamera.js
-** TODO ./extras/cameras/RollCamera.js
-** TODO ./extras/cameras/TrackballCamera.js
-** TODO ./extras/ColorUtils.js
-** TODO ./extras/controls/FirstPersonControls.js
-** TODO ./extras/controls/FlyControls.js
-** TODO ./extras/controls/PathControls.js
-** TODO ./extras/controls/RollControls.js
 ** TODO ./extras/controls/TrackballControls.js
 ** TODO ./extras/core/Curve.js
 ** TODO ./extras/core/CurvePath.js

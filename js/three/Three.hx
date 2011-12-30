@@ -856,7 +856,7 @@ extern class UniformsLib {
 
 @:native("THREE.Texture")
 extern class Texture {
-    public var image : js.Dom.Image;
+    public var image : Dynamic; // TODO: find real type
     public var mapping : Mapping;
     public var wrapS : Int; // Wrapping
     public var wrapT : Int; // Wrapping
@@ -865,7 +865,6 @@ extern class Texture {
     public var needsUpdate : Bool;
     public var offset : Vector2;
     public var repeat : Vector2;
-    public var needsUpdate : Bool;
     public var onUpdate : Void -> Void; // TODO: WTF?
     public function new(image:js.Dom.Image, mapping:Mapping, wrapS:Int, wrapT:Int, magFilter:Int, minFilter:Int) : Void;
     public function clone() : Texture;
@@ -1021,10 +1020,10 @@ class SpriteAlign {
 // TODO: Find a type for image data :)
 @:native("THREE.DataTexture")
 extern class DataTexture extends Texture {
-    public var image : { data:Dynamic, width:Int, height:Int };
+    //public var image : { data:Dynamic, width:Int, height:Int };
     public var format : Int; // Format.RGBA
     public function new(data:Dynamic, width:Int, height:Int, ?format:Int, mapping:Mapping, wrapS:Int, wrapT:Int, magFilter:Int, minFilter:Int) : Void;
-    public function clone() : DataTexture;
+    //public function clone() : DataTexture;
 }
 
 @:native("THREE.Scene")
@@ -1053,8 +1052,10 @@ extern class FogExp2 {
     public function new(hex:Int, ?density:Float) : Void;
 }
 
+interface Renderer {}
+
 @:native("THREE.CanvasRenderer")
-extern class CanvasRenderer {
+extern class CanvasRenderer implements Renderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
     public var sortObjects : Bool;
@@ -1069,7 +1070,7 @@ extern class CanvasRenderer {
 }
 
 @:native("THREE.DOMRenderer")
-extern class DOMRenderer {
+extern class DOMRenderer implements Renderer {
     public var domElement : js.Dom.HtmlDom;
     public function new() : Void;
     public function setSize(width:Int, height:Int) : Void;
@@ -1084,7 +1085,7 @@ extern class DOMRenderer {
 // TODO? THREE.RenderableVertex
 
 @:native("THREE.SVGRenderer")
-extern class SVGRenderer {
+extern class SVGRenderer implements Renderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
     public var sortObjects : Bool;
@@ -1102,7 +1103,7 @@ extern class WebGLContext {
 }
 
 @:native("THREE.WebGLRenderer")
-extern class WebGLRenderer {
+extern class WebGLRenderer implements Renderer {
     public var domElement : js.Dom.HtmlDom;
     public var autoClear : Bool;
     public var autoClearColor : Bool;
@@ -1246,6 +1247,18 @@ extern class ShaderLib {
 
 @:native("THREE.Animation")
 extern class Animation {
+    public var root : Mesh;
+    public var data : Dynamic; // TODO: find a type for THREE.AnimationHandler.get(data)
+    public var hierarchy : Array<Bone>; // TODO: ensure type
+    public var currentTime : Float;
+    public var timeScale : Float;
+    public var isPlaying : Bool;
+    public var isPaused : Bool;
+    public var loop : Bool;
+    public var interpolationType : Int;
+    public var JITCompile : Bool;
+    public var points : Array<Array<Float>>;
+    public var target : Vector3;
     public function new(root:Mesh, data:String, interpolationType:Int /* AnimationHandler statics vars */, jitCompile:Bool) : Void;
     public function play(loop:Bool, startTimeMS:Float) : Void;
     public function pause() : Void;
@@ -1262,30 +1275,139 @@ extern class AnimationHandler {
     public static function update(deltaTimeMS:Float) : Void;
     public static function addToUpdate(animation:Animation) : Void;
     public static function removeFromUpdate(animation:Animation) : Void;
-    public static function add(data:Dynamic) : Void; // data = { name:String, initialized:Bool, hierarchy:Array<Bone>, length:Float, fps:Float }
+    public static function add(data:Dynamic) : Void; // data = { name:String, initialized:Bool, hierarchy:Array<Bone>??, length:Float, fps:Float }
     public static function get(name:String) : Dynamic; // data
     public static function parse(root:Mesh) : Dynamic; // hierarchie = Array<Bone> ?
 }
 
-/*
-  @:native("THREE.AnimationMorphTarget")
-  extern class AnimationMorphTarget {
-    var root ;
-    var data ;
-    var hierarchy ;
+@:native("THREE.AnimationMorphTarget")
+extern class AnimationMorphTarget {
+    var root : Mesh; // TODO: ensure type
+    var data : Dynamic; // TODO: Type of AnimationHandler.get(data)
+    var hierarchy : Dynamic; // TODO: Type of AnimationHandler.parse(root)
     var currentTime : Float;
     var timeScale : Float;
     var isPlaying : Bool;
     var isPaused : Bool;
     var loop : Bool;
     var influence : Float;
-    public function new(root, data) : Void;
+    public function new(root:Mesh, data:Dynamic) : Void;
     public function play(loop:Bool, startTimeMS:Float) : Void;
     public function pause() : Void;
     public function stop() : Void;
     public function update(deltaTimeMS:Float) : Void;
 }
-*/
+
+@:native("THREE.CombinedCamera")
+extern class CombinedCamera extends Camera {
+    public var fov : Float;
+    public var left : Float;
+    public var right : Float;
+    public var top : Float;
+    public var bottom : Float;
+    public var cameraO : OrthographicCamera;
+    public var cameraP : PerspectiveCamera;
+    public var zoom : Float;
+    public var near : Float;
+    public var far : Float;
+    public var inPersepectiveMode : Bool;
+    public var inOrthographicMode : Bool;
+    public function new(width:Int, height:Int, ?fov:Float, ?near:Float, ?far:Float, ?orthonear:Float, ?orthofar:Float) : Void;
+    public function toPerspective() : Void;
+    public function toOrthographic() : Void;
+    public function setFov(fov:Float) : Void;
+    public function setLens(focalLength:Float, framesize:Float) : Float;
+    public function setZoom(zoom:Float) : Void;
+    public function toFrontView() : Void;
+    public function toBackView() : Void;
+    public function toLeftView() : Void;
+    public function toRightView() : Void;
+    public function toTopView() : Void;
+    public function toBottomView() : Void;
+}
+
+@:native("THREE.CubeCamera")
+extern class CubeCamera {
+    public var position : Vector3;
+    public function new(near:Float, far:Float, heightOffset:Float, cubeResolution:Float) : Void;
+    public function updatePosition(newPos:Vector3) : Void;
+    public function updateCubeMap(renderer:Renderer, scene:Scene) : Void;
+}
+
+@:native("THREE.ColorUtils")
+extern class ColorUtils {
+    public static function adjustHSV(color:Color, h:Float, s:Float, v:Float) : Void;
+    public static function rgbToHsv(color:Color, ?hsv:{h:Float, s:Float, v:Float}) : {h:Float, s:Float, v:Float};
+}
+
+// TODO: Test this
+@:native("THREE.FirstPersonControls")
+extern class FirstPersonControls {
+    public var object : Object3D;
+    public var target : Vector3;
+    public var domElement : js.Dom.HtmlDom;
+    public var movementSpeed : Float;
+    public var lookSpeed : Float;
+    public var noFly : Bool;
+    public var lookVertical : Bool;
+    public var autoForward : Bool;
+    public var activeLook : Bool;
+    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function update(delta:Float) : Void;
+}
+
+@:native("THREE.FlyControls")
+extern class FlyControls {
+    public var object : Object3D;
+    public var domElement : js.Dom.HtmlDom;
+    public var movementSpeed : Float;
+    public var rollSpeed : Float;
+    public var dragToLook : Bool;
+    public var autoForward : Bool;
+    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function update(delta:Float) : Void;
+}
+
+@:native("THREE.PathControls")
+extern class PathControls {
+    public var object : Object3D;
+    public var domElement : js.Dom.HtmlDom;
+    public var id : String;
+    public var duration : Int; // millis
+    public var waypoints : Array<Mesh>;
+    public var useConstantSpeed : Bool;
+    public var resamplingCoef : Float;
+    public var debugPath : Object3D;
+    public var debugDummy : Object3D;
+    public var animationParent : Object3D;
+    public var lookSpeed : Float;
+    public var lookVertical : Bool;
+    public var lookHorizontal : Bool;
+    public var verticalAngleMap : { srcRange:Array<Float>, dstRange:Array<Float> };
+    public var horizontalAngleMap : { srcRange:Array<Float>, dstRange:Array<Float> };
+    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function init() : Void;
+    public function update(delta:Float) : Void;
+}
+
+@:native("THREE.RollControls")
+extern class RollControls {
+    public var object : Object3D;
+    public var domElement : js.Dom.HtmlDom;
+    public var mouseLook : Bool;
+    public var autoForward : Bool;
+    public var lookSpeed : Float;
+    public var movementSpeed : Float;
+    public var rollSpeed : Float;
+    public var constrainVertical : Array<Float>;
+    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function update(delta:Float) : Void;
+    public function translateX(distance:Float) : Void;
+    public function translateY(distance:Float) : Void;
+    public function translateZ(distance:Float) : Void;
+    public function rotateHorizontally(amount:Float) : Void;
+    public function rotateVertically(amount:Float) : Void;
+}
 
 @:native("THREE.CubeGeometry")
 extern class CubeGeometry extends Geometry {
