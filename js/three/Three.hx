@@ -870,12 +870,6 @@ extern class Texture {
     public function clone() : Texture;
 }
 
-@:native("THREE.ImageUtils")
-extern class ImageUtils {
-    public static function loadTexture(path:String, mapping:Int, cb:js.Dom.Image->Void) : Texture;
-    public static function loadTextureCube(array:Array<String>, mapping:Int, cb:js.Dom.Image->Void) : Texture;
-}
-
 class Operation {
     public static inline var Multiply = 0;
     public static inline var Mix = 1;
@@ -1409,83 +1403,490 @@ extern class RollControls {
     public function rotateVertically(amount:Float) : Void;
 }
 
-@:native("THREE.CubeGeometry")
-extern class CubeGeometry extends Geometry {
-    @:overload(function(width: Float, height: Float, depth: Float, segmentsWidth: Float, segmentsHeight: Float, segmentsDepth: Float, material: Material, sides: Dynamic):Void {})
-    public function new(width: Float, height: Float, depth: Float, segmentsWidth: Float, segmentsHeight: Float, segmentsDepth: Float, materials: Array<Material>, sides: Dynamic) : Void;
+@:native("THREE.TrackballControls")
+extern class TrackballControls {
+    public var object : Object3D;
+    public var domElement : js.Dom.HtmlDom;
+    public var enabled : Bool;
+    public var screen : { width:Int, height:Int, offsetLeft:Int, offsetTop:Int };
+    public var radius : Float;
+    public var rotateSpeed : Float;
+    public var zoomSpeed : Float;
+    public var panSpeed : Float;
+    public var noRotate : Bool;
+    public var noZoom : Bool;
+    public var staticMoving : Bool;
+    public var dynamicDampingFactor : Float;
+    public var minDistance : Float;
+    public var maxDistance : Float;
+    public var keys : Array<Int>;
+    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function getMouseOnScreen(clientX:Int, clientY:Int) : Vector2;
+    public function getMouseProjectionOnBall(clientX:Int, clientY:Int) : Vector3;
+    public function update() : Void;
 }
 
-@:native("THREE.CylinderGeometry")
-extern class CylinderGeometry extends Geometry {
-    public function new(radiusTop: Float, radiusBottom: Float, height: Float, segmentsRadius: Float, segmentsHeight: Float, openEnded: Bool) : Void;
+// abstract Curve base class
+@:native("THREE.Curve")
+extern class Curve {
+    public function new() : Void;
+    public function getPoint(t:Float) : Vector2;
+    public function getPointAt(u:Float) : Vector2;
+    public function getPoints(divisions:Int) : Array<Vector2>;
+    public function getSpacedPoints(divisions:Int) : Array<Vector2>;
+    public function getLength() : Float;
+    public function getLengths(divisions:Int) : Array<Float>;
+    public function getUtoTmapping(u:Float, ?distance:Float) : Float;
+    public function getNormalVector(t:Float) : Vector2;
+    public function getTangent(t:Float) : Vector2;
+    public function getTangentAt(u:Float) : Vector2;
+}
+
+@:native("THREE.LineCurve")
+extern class LineCurve extends Curve {
+    @:overload(function(x0:Float, y0:Float, x1:Float, y1:Float): Void {})
+    public function new(v1:Vector2, v2:Vector2) : Void;
+}
+
+@:native("THREE.QuadraticBezierCurve")
+extern class QuadraticBezierCurve extends Curve {
+    @:overload(function(x0:Float, y0:Float, x1:Float, y1:Float, x2:Float, y2:Float) : Void {})
+    public function new(v0:Vector2, v1:Vector2, v2:Vector2) : Void;
+}
+
+@:native("THREE.CubicBezierCurve")
+extern class CubicBezierCurve extends Curve {
+    @:overload(function(x0:Float, y0:Float, x1:Float, y1:Float, x2:Float, y2:Float, x3:Float, y3:Float) : Void {})
+    public function new(v0:Vector2, v1:Vector2, v2:Vector2, v4:Vector2) : Void;
+}
+
+@:native("THREE.SplineCurve")
+extern class SplineCurve extends Curve {
+    public function new(?points:Array<Vector2>) : Void;
+}
+
+@:native("THREE.ArcCurve")
+extern class ArcCurve extends Curve {
+    public function new(aX:Float, aY:Float, aRadius:Float, aStartAngle:Float, aEndAngle:Float, aClockWise:Bool) : Void;
+}
+
+// src/extras/core/Curve.js also contains THREE.Curve.Utils
+
+// TODO: getPoint() and cie will returns Vector3 objects for these 3D curves, we may haxe to rework the API
+
+@:native("THREE.LineCurve3") extern class LineCurve3 extends Curve {
+    public function new(v1:Vector3, v2:Vector3) : Void;
+}
+
+@:native("THREE.QuadraticBezierCurve3") extern class QuadraticBezierCurve3 extends Curve {
+    public function new(v0:Vector3, v1:Vector3, v2:Vector3) : Void;
+}
+
+@:native("THREE.CubicBezierCurve3") extern class CubicBezierCurve3 extends Curve {
+    public function new(v0:Vector3, v1:Vector3, v2:Vector3) : Void;
+}
+
+@:native("THREE.SplineCurve3") extern class SplineCurve3 extends Curve {
+    public function new(?points:Array<Vector3>) : Void;
 }
 
 @:native("THREE.CurvePath")
-extern class CurvePath {
-    // TODO
+extern class CurvePath extends Curve {
+    public var curves : Array<Curve>;
+    public var bends : Array<Path>;
+    public function new() : Void;
+    public function add(curve:Curve) : Void;
+    public function closePath() : Void;
+    public function getCurveLengths() : Array<Float>;
+    public function getBoundingBox() : { minX:Float, minY:Float, maxX:Float, maxY:Float, centroid:Vector2 };
+    public function createPointsGeometry(divisions:Int) : Geometry;
+    public function createSpacedPointsGeometry(divisions:Int) : Geometry;
+    public function createGeometry(points:Array<Vector2>) : Geometry;
+    public function addWrapPath(bendpath:Path) : Void;
+    public function getTransformedPoints(segments:Int, bends:Array<Path>) : Array<Vector2>;
+    public function getTransformedSpacedPoints(segments:Int, bends:Array<Path>) : Array<Vector2>;
+    public function getWrapPoints(oldPts:Array<Vector2>, path:Path) : Array<Vector2>;
 }
 
 @:native("THREE.Path")
 extern class Path extends CurvePath {
-    public function new(points:Array<Vector2>) : Void;
+    public function new(?points:Array<Vector2>) : Void;
+    public function fromPoints(points:Array<Vector2>) : Void;
     public function moveTo(x:Float, y:Float) : Void;
     public function lineTo(x:Float, y:Float) : Void;
     public function quadraticCurveTo(aCPx:Float, aCPy:Float, aX:Float, aY:Float) : Void;
     public function bezierCurveTo(aCP1x:Float, aCP1y:Float, aCP2x:Float, aCP2y:Float, aX:Float, aY:Float) : Void;
     public function splineThru(pts:Array<Vector2>) : Void;
     public function arc(aX:Float, aY:Float, aRadius:Float, aStartAngle:Float, aEndAngle:Float, aClockWise:Bool) : Void;
-    public function getSpacedPoints(divisions:Int, closedPath:Bool) : Void;
-    public function getPoints(divisions:Int, closedPath:Bool) : Void;
+    public function debug(canvas:js.Dom.HtmlDom) : Void;
     public function toShapes() : Array<Shape>;
 }
 
 @:native("THREE.Shape")
 extern class Shape extends Path {
+    public var holes :Array<Vector2>;
     public function new() : Void;
-    public function extrude() : ExtrudeGeometry;
+    public function extrude(options:Dynamic) : ExtrudeGeometry;
+    public function getPointsHoles(divisions:Int) : Array<Vector2>;
+    public function getSpacedPointsHoles(divisions:Int) : Array<Vector2>;
+    public function extractAllPoints(divisions:Int) : { shape:Array<Vector2>, holes:Array<Vector2> };
+    public function extractAllSpacedPoints(divisions:Int) : { shape:Array<Vector2>, holes:Array<Vector2> };
+}
+
+// src/extras/core/Shape.js also contains THREE.Shape.Utils
+
+@:native("THREE.TextPath")
+extern class TextPath extends Path {
+    public var parameters : Dynamic;
+    public function new(text:String, ?parameters:Dynamic) : Void;
+    public function set(text:String, parameters:Dynamic) : Void;
+}
+
+typedef CubeGeometrySides = {
+    px:Bool,
+    nx:Bool,
+    py:Bool,
+    ny:Bool,
+    pz:Bool,
+    nz:Bool
+};
+
+@:native("THREE.CubeGeometry")
+extern class CubeGeometry extends Geometry {
+    var sides : CubeGeometrySides;
+    @:overload(function(width:Float, height:Float, depth:Float, segmentsWidth:Float, segmentsHeight:Float, segmentsDepth:Float, ?material:Material, ?sides:CubeGeometrySides) : Void {})
+    public function new(width:Float, height:Float, depth:Float, segmentsWidth:Float, segmentsHeight:Float, segmentsDepth:Float, ?materials:Array<Material>, ?sides:CubeGeometrySides) : Void;
+}
+
+@:native("THREE.CylinderGeometry")
+extern class CylinderGeometry extends Geometry {
+    public function new(?radiusTop:Float, ?radiusBottom:Float, ?height:Float, ?segmentsRadius:Float, ?segmentsHeight:Float, ?openEnded:Bool) : Void;
 }
 
 @:native("THREE.ExtrudeGeometry")
 extern class ExtrudeGeometry extends Geometry {
-    public function new(shapes:Array<Shape>, options:Dynamic) : Void;
+    /**
+     * @author zz85 / http://www.lab4games.net/zz85/blog
+     *
+     * Creates extruded geometry from a path shape.
+     *
+     * parameters = {
+     *
+     *  size: 			<float>, 	// size of the text
+     *  height: 		<float>, 	// thickness to extrude text
+     *  curveSegments: 	<int>,		// number of points on the curves
+     *  steps: 			<int>,		// number of points for z-side extrusions
+     *
+     *  font: 			<string>,		// font name
+     *  weight: 		<string>,		// font weight (normal, bold)
+     *  style: 			<string>,		// font style  (normal, italics)
+     *
+     *  bevelEnabled:	<bool>,			// turn on bevel
+     *  bevelThickness: <float>, 		// how deep into text bevel goes
+     *  bevelSize:		<float>, 		// how far from text outline is bevel
+     *  bevelSegments:	<int>, 			// number of bevel layers
+     *
+     *  extrudePath:	<THREE.CurvePath>	// path to extrude shape along
+     *  bendPath:		<THREE.CurvePath> 	// path to bend the geometry around
+     *
+     *  material:		 <THREE.Material>	// material for front and back faces
+     *  extrudeMaterial: <THREE.Material>	// material for extrusion and beveled faces
+     *
+     *  }
+     **/
+    public function new(?shapes:Array<Shape>, ?options:Dynamic) : Void;
+    public function addShape(shape:Shape, options:Dynamic) : Void;
 }
 
 @:native("THREE.IcosahedronGeometry")
 extern class IcosahedronGeometry extends Geometry {
-    public function new(subdivisions: Float) : Void;
+    public function new(?subdivisions:Int) : Void;
 }
 
 @:native("THREE.LatheGeometry")
 extern class LatheGeometry extends Geometry {
-    public function new(points: Array<Vector3>, steps: Float, angle: Float) : Void;
+    public var steps : Int;
+    public var angle : Float;
+    public function new(points:Array<Vector3>, ?steps:Int, ?angle:Float) : Void;
 }
 
 @:native("THREE.OctahedronGeometry")
 extern class OctahedronGeometry extends Geometry {
-    public function new(radius: Float, detail: Float) : Void;
+    public function new(radius:Float, ?detail:Int) : Void;
 }
 
 @:native("THREE.PlaneGeometry")
 extern class PlaneGeometry extends Geometry {
-    public function new(width:Float, height: Float, segmentsWidth: Float, segmentsHeight: Float) : Void;
+    public function new(width:Float, height:Float, ?segmentsWidth:Float, ?segmentsHeight:Float) : Void;
 }
 
 @:native("THREE.SphereGeometry")
 extern class SphereGeometry extends Geometry {
-    public function new(radius:Float, segmentsWidth:Float, segmentsHeight:Float) : Void;
+    public function new(?radius:Float, ?segmentsWidth:Float, ?segmentsHeight:Float, ?phiStrat:Float, ?phiLength:Float, ?thetaStart:Float, ?thetaLength:Float) : Void;
 }
 
 @:native("THREE.TextGeometry")
-extern class TextGeometry extends Geometry {
-    public function new(text:String, parameters:Dynamic) : Void;
+extern class TextGeometry extends ExtrudeGeometry {
+    /**
+     * @author zz85 / http://www.lab4games.net/zz85/blog
+     * @author alteredq / http://alteredqualia.com/
+     *
+     * For creating 3D text geometry in three.js
+     *
+     * Text = 3D Text
+     *
+     * parameters = {
+     *  size: 			<float>, 	// size of the text
+     *  height: 		<float>, 	// thickness to extrude text
+     *  curveSegments: 	<int>,		// number of points on the curves
+     *
+     *  font: 			<string>,		// font name
+     *  weight: 		<string>,		// font weight (normal, bold)
+     *  style: 			<string>,		// font style  (normal, italics)
+     *
+     *  bevelEnabled:	<bool>,			// turn on bevel
+     *  bevelThickness: <float>, 		// how deep into text bevel goes
+     *  bevelSize:		<float>, 		// how far from text outline is bevel
+     *
+     *  bend:			<bool>			// bend according to hardcoded curve (generates bendPath)
+     *  bendPath:       <curve>         // wraps text according to bend Path
+     *  }
+     *
+     * It uses techniques used in:
+     *
+     * 	typeface.js and canvastext
+     * 		For converting fonts and rendering with javascript
+     *		http://typeface.neocracy.org
+     *
+     *	Triangulation ported from AS3
+     *		Simple Polygon Triangulation
+     *		http://actionsnippet.com/?p=1462
+     *
+     * 	A Method to triangulate shapes with holes
+     *		http://www.sakri.net/blog/2009/06/12/an-approach-to-triangulating-polygons-with-holes/
+     *
+     */
+    /*	Usage Examples
+
+	// TextGeometry wrapper
+
+	var text3d = new TextGeometry( text, options );
+
+	// Complete manner
+
+	var textPath = new THREE.TextPath( text, options );
+	var textShapes = textPath.toShapes();
+	var text3d = new ExtrudeGeometry( textShapes, options );
+
+    */
+    public function new(text:String, ?parameters:Dynamic) : Void;
+}
+
+typedef FontData = {
+    familyName:String,
+    cssFontWeight:String,
+    cssFontStyle:String,
+    glyphs : Dynamic //
+};
+
+@:native("THREE.FontUtil")
+extern class FontUtils {
+    static var faces : Dynamic;
+    static var face : String;
+    static var weight : String;
+    static var style : String;
+    static var size : Float;
+    static var divisions : Int;
+    static function getFace() : Dynamic;
+    static function loadFace(data:FontData) : FontData;
+    static function drawText(text:String) : { paths:Array<Path>, offset:Float };
+    static function extractGlyphPoints(c:String, face:Dynamic, scale:Float, offset:Float, path:Path) : { offset:Float, points:Array<Vector2>, path:Path };
 }
 
 @:native("THREE.TorusGeometry")
 extern class TorusGeometry extends Geometry {
-    public function new(radius: Float, tube: Float, segmentsR: Float, segmentsT: Float, arc: Float) : Void;
+    public function new(?radius:Float, ?tube:Float, ?segmentsR:Int, ?segmentsT:Int, ?arc:Float) : Void;
 }
 
 @:native("THREE.TorusKnotGeometry")
 extern class TorusKnotGeometry extends Geometry {
-    public function new(radius: Float, tube: Float, segmentsR: Float, segmentsT: Float, p: Float, q: Float, heightScale: Float) : Void;
+    public function new(?radius:Float, ?tube:Float, ?segmentsR:Int, ?segmentsT:Int, ?p:Float, q:Float, ?heightScale:Float) : Void;
+}
+
+@:native("THREE.GeometryUtils")
+extern class GeometryUtils {
+    @:overload(function(geometry:Geometry, geometry2:Geometry) : Void {})
+    public static function merge(geometry:Geometry, mesh:Mesh) : Void;
+    public static function clone(geometry:Geometry) : Geometry;
+    public static function randomPointInTriangle(vectorA:Vector3, vectorB:Vector3, vectorC:Vector3) : Vector3;
+    // face : Face3 | Face4
+    public static function randomPointInFace(face:Dynamic, geometry:Geometry, useCachedAreas:Bool) : Vector3;
+    public static function randomPointsInGeometry(geometry:Geometry, n:Int) : Array<Vector3>;
+    public static function triangleArea(vectorA:Vector3, vectorB:Vector3, vectorC:Vector3) : Float;
+    public static function center(geometry:Geometry) : Void;
+}
+
+@:native("THREE.ImageUtils")
+extern class ImageUtils {
+    public static function loadTexture(path:String, mapping:Int, cb:js.Dom.Image->Void) : Texture;
+    public static function loadTextureCube(array:Array<String>, mapping:Int, cb:js.Dom.Image->Void) : Texture;
+    public static function getNormalMap(image:js.Dom.Image, ?depth:Float) : js.Dom.HtmlDom; // Canvas
+}
+
+@:native("THREE.Loader")
+extern class Loader {
+    public var showStatus : Bool;
+    public var statusDomElement : js.Dom.HtmlDom;
+    public var onLoadStart : Void -> Void;
+    public var onLoadProgress : Void -> Void;
+    public var onLoadComplete : Void -> Void;
+    public function new(?showStatus:Bool) : Void;
+    function addStatusElement() : Void;
+    function updateProgress(progress:{loaded:Int, total:Int}) : Void;
+    function extractUrlBase(url:String) : String;
+    // materials are passed to createMaterial() but are not documented except inside src/extras/loaders/Loaders.js createMaterial() function, these parameters comes from a model file
+    function initMaterials(scope:{ materials:Array<Material> }, materials:Array<Dynamic>, texturePath:String) : Void;
+    function hasNormals(scope:{ materials:Array<Material> }) : Bool ;
+    function createMaterial(m:Dynamic, texturePath:String) : Material;
+}
+
+interface Model {
+}
+
+// Note: BinaryLoader.prototype.createBinModel contains a Model definition
+@:native("THREE.BinaryLoader")
+extern class BinaryLoader extends Loader {
+    public var showProgress : Bool;
+    public var texturePath : String;
+    public var binaryPath : String;
+    public function new(?showStatus:Bool) : Void;
+    // Load models generated by slim OBJ converter with BINARY option (converter_obj_three_slim.py -t binary)
+    //  - binary models consist of two files: JS and BIN
+    //  - parameters
+    //		- url (required)
+    //		- callback (required)
+    //		- texturePath (optional: if not specified, textures will be assumed to be in the same folder as JS model file)
+    //		- binaryPath (optional: if not specified, binary file will be assumed to be in the same folder as JS model file)
+    public function load(url:String, resultCallback:Model->Void, ?texturePath:String, ?binaryPath:String) : Void;
+}
+
+// TODO: Complete Collada manipulation API
+typedef ColladaData = {
+    scene : Dynamic,
+    morphs : Dynamic,
+    skins : Dynamic,
+    dae : {
+        image : Dynamic,
+        materials : Dynamic,
+        effects : Dynamic,
+        geometries : Dynamic,
+        controllers : Dynamic,
+        animations : Dynamic,
+        visualScenes : Dynamic,
+        scene : Dynamic,
+    }
+};
+
+@:native("THREE.ColladaLoader")
+extern class ColladaLoader {
+    public function new() : Void;
+    public function load(url:String, readyCallback:ColladaData->Void) : Void;
+    public function parse(doc:Dynamic /* XMLHttpRequest result responseXML */, resultCallback:ColladaData->Void, ?url:String) : ColladaData;
+    public function setPreferredShading(shading:Dynamic) : Void;
+    public function applySkin(geometry:Geometry, instanceCtrl:Dynamic, frame:Dynamic) : Void;
+    var geometries : Dynamic;
+}
+
+@:native("THREE.JSONLoader")
+extern class JSONLoader extends Loader {
+    public function new(?showStatus:Bool) : Void;
+    public function load(url:String, resultCallback:Model->Void, ?texturePath:String) : Void;
+}
+
+typedef SceneTrigger = {
+    var type : String;
+    var o : Object3D;
+};
+
+typedef SceneLoaderResult = {
+    var scene : Scene;
+    var geometries : Dynamic<Geometry>;
+    var materials : Dynamic<Material>;
+    var textures : Dynamic<Texture>;
+    var objects : Dynamic<Object3D>;
+    var cameras : Dynamic<Camera>;
+    var lights : Dynamic<Light>;
+    var fogs : Dynamic<Fog>;
+    var triggers : Dynamic<SceneTrigger>;
+    var empties : Dynamic<Object3D>;
+};
+
+typedef SceneLoaderProgress = {
+    var totalModels : Int;
+    var totalTextures : Int;
+    var loadedModels : Int;
+    var loadedTextures : Int;
+};
+
+@:native("THREE.SceneLoader")
+extern class SceneLoader {
+    public var onLoadStart : Void -> Void;
+    public var onLoadProgress : Void -> Void;
+    public var onLoadComplete : Void -> Void;
+    var callbackSync : SceneLoaderResult -> Void;
+    public var callbackProgress : SceneLoaderProgress -> SceneLoaderResult -> Void;
+    public function new() : Void;
+    public function load(url:String, callbackFinished:SceneLoaderResult->Void) : Void;
+}
+
+@:native("THREE.UTF8Loader")
+extern class UTF8Loader {
+    public function new() : Void;
+    /**
+     * Loader for UTF8 encoded models generated by:
+     *	http://code.google.com/p/webgl-loader/
+     *
+     * Limitations:
+     *  - number of vertices < 65536 (this is after optimizations in compressor, input OBJ may have even less)
+     *	- models must have normals and texture coordinates
+     *  - texture coordinates must be only from <0,1>
+     *  - no materials support yet
+     *  - models are scaled and offset (copy numbers from compressor and use them as parameters in UTF8Loader.load() )
+     *
+     * @author alteredq / http://alteredqualia.com/
+     * @author won3d / http://twitter.com/won3d
+     */
+    // Load UTF8 compressed models generated by objcompress
+    //  - parameters
+    //		- url (required)
+    //		- callback (required)
+    //		- metaData (optional)
+    public function load(url:String, resultCallback:Model->Void, metaData:{ scale:Float, offsetX:Float, offsetY:Float, offsetZ:Float }) : Void;
+}
+
+@:native("THREE.SubdivisionModifier")
+extern class SubdivisionModifier {
+    public var subdivisions : Int;
+    public var useOldVertexColors : Bool;
+    public var supportUVs : Bool;
+    public function new(?subdivisions:Int) : Void;
+    public function modify(geometry:Geometry) : Void;
+    public function smooth(geometry:Geometry) : Void;
+}
+
+@:native("THREE.Axes")
+extern class Axes extends Object3D {
+    public function new() : Void;
+}
+
+@:native("THREE.MarchingCubes")
+extern class MarchingCubes extends Object3D {
+    public function new(resolution:Float, material:Material) : Void;
+    public function generateGeometry() : Geometry;
+    public function reset() : Void;
+}
+
+@:native("THREE.AnaglyphWebGLRenderer")
+extern class AnaglyphWebGLRenderer extends WebGLRenderer {
+    public function new(?parameters:Dynamic) : Void;
 }

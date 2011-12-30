@@ -18,34 +18,7 @@ Laurent
 ** TODO Embed three.js javascript (see haxe/std/js/JQuery.__init__)
 ** TODO Integrate requestAnimationFrame
 ** TODO Put on haxelib
-** TODO ./extras/controls/TrackballControls.js
-** TODO ./extras/core/Curve.js
-** TODO ./extras/core/CurvePath.js
-** TODO ./extras/core/Path.js
-** TODO ./extras/core/Shape.js
-** TODO ./extras/core/TextPath.js
-** TODO ./extras/geometries/CubeGeometry.js
-** TODO ./extras/geometries/CylinderGeometry.js
-** TODO ./extras/geometries/ExtrudeGeometry.js
-** TODO ./extras/geometries/IcosahedronGeometry.js
-** TODO ./extras/geometries/LatheGeometry.js
-** TODO ./extras/geometries/OctahedronGeometry.js
-** TODO ./extras/geometries/PlaneGeometry.js
-** TODO ./extras/geometries/SphereGeometry.js
-** TODO ./extras/geometries/TextGeometry.js
-** TODO ./extras/geometries/TorusGeometry.js
-** TODO ./extras/geometries/TorusKnotGeometry.js
-** TODO ./extras/GeometryUtils.js
-** TODO ./extras/ImageUtils.js
-** TODO ./extras/loaders/BinaryLoader.js
-** TODO ./extras/loaders/ColladaLoader.js
-** TODO ./extras/loaders/JSONLoader.js
-** TODO ./extras/loaders/Loader.js
-** TODO ./extras/loaders/SceneLoader.js
-** TODO ./extras/loaders/UTF8Loader.js
-** TODO ./extras/modifiers/SubdivisionModifier.js
-** TODO ./extras/objects/Axes.js
-** TODO ./extras/objects/MarchingCubes.js
+** TODO More work on Collada API part
 ** TODO ./extras/renderers/AnaglyphWebGLRenderer.js
 ** TODO ./extras/renderers/CrosseyedWebGLRenderer.js
 ** TODO ./extras/renderers/ParallaxBarrierWebGLRenderer.js
