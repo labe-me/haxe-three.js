@@ -1,6 +1,8 @@
 #+TITLE: Haxe externs for three.js
 * About
-Work in progress based on three.js (out of date) [[https://github.com/mrdoob/three.js/wiki/API-Reference][API]] and (up to date) [[https://github.com/mrdoob/three.js][source code]].
+Wanted to play with three.js with haxe.
+
+No up to date externs, no haxelib, plently of small free time slices these days, and someone had to do this anyway :)
 
 Please fork and contribute.
 
