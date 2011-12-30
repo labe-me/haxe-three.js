@@ -5,6 +5,7 @@ Haxe externs for [[https://github.com/mrdoob/three.js][three.js]] (release 46).
 Please fork and contribute as I may not maintain it in the long run :)
 
 If you meet me, buy me a beer.
+
 Laurent
 * Install
 : haxelib install three.js
@@ -15,20 +16,20 @@ Laurent
 : haxelib dev three.js `pwd`/haxe-three.js
 * Usage
 
-Regular usage will embed three.js minified javascript inside haxe generated code:
+Regular usage will embed three.js minified javascript:
 
 : haxe -lib three.js ...
-
-To avoid embedding javascript (don't forget to include three.js javascript manually inside your HTML):
-
-: haxe -lib three.js -DnoEmbedJS ...
 
 Debug compilation will embed non-minified javascript (easier to debug):
 
 : haxe -lib three.js -debug ...
 
+To avoid embedding javascript (don't forget to include three.js javascript manually inside your HTML):
+
+: haxe -lib three.js -DnoEmbedJS ...
+
 * Todo list
 ** TODO Test api
 ** TODO Integrate requestAnimationFrame
-** TODO Put on haxelib
 ** TODO More work on Collada API part
+** TODO More TODOs in Three.hx
