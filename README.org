@@ -14,13 +14,7 @@ Laurent
 : haxe -lib three.js ...
 * Todo list
 ** TODO Test api
-** TODO Set optional parameters optional
 ** TODO Embed three.js javascript (see haxe/std/js/JQuery.__init__)
 ** TODO Integrate requestAnimationFrame
 ** TODO Put on haxelib
 ** TODO More work on Collada API part
-** TODO ./extras/renderers/AnaglyphWebGLRenderer.js
-** TODO ./extras/renderers/CrosseyedWebGLRenderer.js
-** TODO ./extras/renderers/ParallaxBarrierWebGLRenderer.js
-** TODO ./extras/SceneUtils.js
-** TODO ./extras/ShaderUtils.js

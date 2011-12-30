@@ -1890,3 +1890,44 @@ extern class MarchingCubes extends Object3D {
 extern class AnaglyphWebGLRenderer extends WebGLRenderer {
     public function new(?parameters:Dynamic) : Void;
 }
+
+@:native("THREE.CrosseyedWebGLRenderer")
+extern class CrosseyedWebGLRenderer extends WebGLRenderer {
+    public function new(?parameters:Dynamic) : Void;
+}
+
+@:native("THREE.ParallaxBarrierWebGLRenderer")
+extern class ParallaxBarrierWebGLRenderer extends WebGLRenderer {
+    public function new(?parameters:Dynamic) : Void;
+}
+
+@:native("THREE.SceneUtils")
+extern class SceneUtils {
+    public static function showHierarchy(root:Object3D, visible:Bool) : Void;
+    public static function traverseHierarchy(root:Object3D, cb:Object3D->Void) : Void;
+    public static function createMultiMaterialObject(geometry:Geometry, materials:Array<Material>) : Object3D;
+    public static function cloneObject(source:Object3D) : Object3D;
+}
+
+// requires WebGLRenderer
+@:native("THREE.ShaderUtils")
+extern class ShaderUtils {
+    public static var lib : {
+        /* -------------------------------------------------------------------------
+		//	Fresnel shader
+		//	- based on Nvidia Cg tutorial
+        ------------------------------------------------------------------------- */
+        var fresnel: { uniforms:Dynamic, fragmentShader:String, vertexShader:String };
+		/* -------------------------------------------------------------------------
+		//	Normal map shader
+		//		- Blinn-Phong
+		//		- normal + diffuse + specular + AO + displacement + reflection + shadow maps
+		//		- point and directional lights (use with "lights: true" material option)
+		 ------------------------------------------------------------------------- */
+        var normal: { uniforms:Dynamic, fragmentShader:String, vertexShader:String };
+        /* -------------------------------------------------------------------------
+		//	Cube map shader
+        ------------------------------------------------------------------------- */
+        var cube: { uniforms:Dynamic, fragmentShader:String, vertexShader:String };
+    };
+}
