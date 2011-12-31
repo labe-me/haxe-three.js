@@ -30,6 +30,7 @@ To avoid embedding javascript (don't forget to include three.js javascript manua
 
 * Todo list
 ** TODO Test api
-** TODO Integrate requestAnimationFrame
+** TODO Integrate RequestAnimationFrame
+** TODO Integrate Stats
 ** TODO More work on Collada API part
 ** TODO More TODOs in Three.hx
