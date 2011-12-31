@@ -141,8 +141,9 @@ extern class Geometry {
     public function mergeVertices() : Void;
 }
 
+// TODO: Meow... import js.three.Three is not really helpful there, we may haxe to split the API into many files
 @:native("THREE.Math")
-extern class Math {
+extern class MathUtils {
     public static function clamp(x:Float, a:Float, b:Float) : Float;
     public static function clampBottom(x:Float, a:Float) : Float;
     public static function mapLinear(x:Float, a1:Float, a2:Float, b1:Float, b2:Float) : Float;
@@ -1142,7 +1143,7 @@ extern class WebGLRenderer implements Renderer {
     public function deallocateObject(object:Object3D) : Void;
     public function deallocateTexture(texture:Texture) : Void;
     public function updateShadowMap(scene:Scene, camera:Camera) : Void;
-    public function render(scene:Scene, camera:Camera, renderTarget:WebGLRenderTarget, forceClear:Bool) : Void;
+    public function render(scene:Scene, camera:Camera, ?renderTarget:WebGLRenderTarget, ?forceClear:Bool) : Void;
     // There are more methods, mainly private ones
 }
 
@@ -1728,7 +1729,7 @@ extern class GeometryUtils {
 
 @:native("THREE.ImageUtils")
 extern class ImageUtils {
-    public static function loadTexture(path:String, mapping:Int, cb:js.Dom.Image->Void) : Texture;
+    public static function loadTexture(path:String, ?mapping:Int, ?cb:js.Dom.Image->Void) : Texture;
     public static function loadTextureCube(array:Array<String>, mapping:Int, cb:js.Dom.Image->Void) : Texture;
     public static function getNormalMap(image:js.Dom.Image, ?depth:Float) : js.Dom.HtmlDom; // Canvas
 }
