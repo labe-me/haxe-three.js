@@ -31,13 +31,13 @@ To avoid embedding javascript (don't forget to include three.js javascript manua
 * Todo list
 ** TODO Test api
 ** TODO Integrate RequestAnimationFrame
-** TODO Integrate Stats
 ** TODO More work on Collada API part
 ** TODO More TODOs in Three.hx
+** TODO Fix the Date.now() problem
 * Notes
 Haxe modify some javascript prototypes and create a few incompatibilites.
 
 Here's a list of things to care:
 
 - Array prototype is modified which affect the "for v in someArray" javascript behaviour
-- Date.now is overriden by haxe, the new method returns a Date object instead of the regular time stamp
+- Date.now is overriden by haxe, the new method returns a Date object instead of the regular time stamp, this is bad and must be adressed.
