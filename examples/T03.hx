@@ -93,7 +93,7 @@ class T03 {
         }, false);
 
 
-        var timer = new haxe.Timer(30);
+        var timer = new haxe.Timer(Math.round(1000/60));
         timer.run = function(){
             camera.position.x += (mouseX - camera.position.x) * 0.05;
             camera.position.y += (-mouseY - camera.position.y) * 0.05;

@@ -74,8 +74,10 @@ extern class Edge {
     public function new(v1:Vertex, v2:Vertex, vi1:Int, vi2:Int) : Void;
 }
 
+interface Face {}
+
 @:native("THREE.Face3")
-extern class Face3 {
+extern class Face3 implements Face {
     public var a : Float;
     public var b : Float;
     public var c : Float;
@@ -94,7 +96,7 @@ extern class Face3 {
 }
 
 @:native("THREE.Face4")
-extern class Face4 {
+extern class Face4 implements Face {
     public var a : Float;
     public var b : Float;
     public var c : Float;
@@ -302,14 +304,20 @@ extern class Quaternion {
     public static function slerp(qa:Quaternion, qb:Quaternion, qm:Quaternion, t:Float) : Quaternion;
 }
 
+typedef RayIntersect = {
+    var distance : Float;
+    var point : Vector3;
+    var face : Face;
+    var object : Object3D;
+};
 @:native("THREE.Ray")
 extern class Ray {
     public var origin : Vector3;
     public var direction : Vector3;
     public function new(?origin:Vector3, ?direction:Vector3) : Void;
-    public function intersectScene(scene:Scene) : Array<Object3D>;
-    public function intersectObjects(objects:Array<Object3D>) : Array<Object3D>;
-    public function intersectObject(object:Object3D) : Array<Object3D>;
+    public function intersectScene(scene:Scene) : Array<RayIntersect>;
+    public function intersectObjects(objects:Array<Object3D>) : Array<RayIntersect>;
+    public function intersectObject(object:Object3D) : Array<RayIntersect>;
 }
 
 @:native("THREE.Rectangle")
@@ -1555,8 +1563,8 @@ typedef CubeGeometrySides = {
 @:native("THREE.CubeGeometry")
 extern class CubeGeometry extends Geometry {
     var sides : CubeGeometrySides;
-    @:overload(function(width:Float, height:Float, depth:Float, segmentsWidth:Float, segmentsHeight:Float, segmentsDepth:Float, ?material:Material, ?sides:CubeGeometrySides) : Void {})
-    public function new(width:Float, height:Float, depth:Float, segmentsWidth:Float, segmentsHeight:Float, segmentsDepth:Float, ?materials:Array<Material>, ?sides:CubeGeometrySides) : Void;
+    @:overload(function(width:Float, height:Float, depth:Float, ?segmentsWidth:Float, ?segmentsHeight:Float, ?segmentsDepth:Float, ?material:Material, ?sides:CubeGeometrySides) : Void {})
+    public function new(width:Float, height:Float, depth:Float, ?segmentsWidth:Float, ?segmentsHeight:Float, ?segmentsDepth:Float, ?materials:Array<Material>, ?sides:CubeGeometrySides) : Void;
 }
 
 @:native("THREE.CylinderGeometry")
