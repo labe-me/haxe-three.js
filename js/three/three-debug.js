@@ -22297,8 +22297,8 @@ THREE.IcosahedronGeometry = function ( subdivisions ) {
 	// subdivide faces to refine the triangles
 	for (var i=0; i < this.subdivisions; i++) {
 		tempFaces = new THREE.Geometry();
-		for (var tri in tempScope.faces) {
-			// replace each triangle by 4 triangles
+		for (var tri=0; tri < tempScope.faces.length; tri++) {
+            // replace each triangle by 4 triangles
 			var a = getMiddlePoint(tempScope.faces[tri].a, tempScope.faces[tri].b);
 			var b = getMiddlePoint(tempScope.faces[tri].b, tempScope.faces[tri].c);
 			var c = getMiddlePoint(tempScope.faces[tri].c, tempScope.faces[tri].a);
