@@ -2,16 +2,10 @@
  * @author mr.doob / http://mrdoob.com/
  */
 
-
 var Stats = function () {
 
-    var time = Date.now;
-    // haxe replaces Date.now...
-    if (haxe != null)
-        time = function(){ return Date.now().getTime(); }
-
 	var _container, _bar, _mode = 0, _modes = 2,
-	_frames = 0, _time = time(), _timeLastFrame = _time, _timeLastSecond = _time,
+	_frames = 0, _time = Date.now(), _timeLastFrame = _time, _timeLastSecond = _time,
 	_fps = 0, _fpsMin = 1000, _fpsMax = 0, _fpsDiv, _fpsText, _fpsGraph,
 	_fpsColors = [ [ 16, 16, 48 ], [ 0, 255, 255 ] ],
 	_ms = 0, _msMin = 1000, _msMax = 0, _msDiv, _msText, _msGraph,
@@ -126,7 +120,7 @@ var Stats = function () {
 
 		update: function () {
 
-			_time = time();
+			_time = Date.now();
 
 			_ms = _time - _timeLastFrame;
 			_msMin = Math.min( _msMin, _ms );

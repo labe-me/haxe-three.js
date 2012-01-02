@@ -28,16 +28,19 @@ To avoid embedding javascript (don't forget to include three.js javascript manua
 
 : haxe -lib three.js -DnoEmbedJS ...
 
+Take a look at the [[https://github.com/labe-me/haxe-three.js/tree/master/examples][examples]] for some code ported from original three.js examples.
+
 * Todo list
 ** TODO Test api
 ** TODO Integrate RequestAnimationFrame
 ** TODO More work on Collada API part
 ** TODO More TODOs in Three.hx
-** TODO Fix the Date.now() problem
 * Notes
 Haxe modify some javascript prototypes and create a few incompatibilites.
 
-Here's a list of things to care:
+Here's a list of things to care about:
 
 - Array prototype is modified which affect the "for v in someArray" javascript behaviour
 - Date.now is overriden by haxe, the new method returns a Date object instead of the regular time stamp, this is bad and must be adressed.
+
+*Important:* The three.js haxelib package provides a modified Date.hx and haxe/Timer.hx to fix the Date.now() problem.
