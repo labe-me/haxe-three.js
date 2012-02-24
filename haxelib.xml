@@ -1,7 +1,7 @@
 <project name="three.js" url="https://github.com/labe-me/haxe-three.js" license="BSD">
   <user name="threejs"/>
   <description>Externs for three.js</description>
-  <version name="0.2.46">Added js.Stats and slightly improved things (three.js r46). IMPORTANT: Modifies Date and haxe.Timer on javascript target to avoid overriding Date.now() browser method.</version>
+  <version name="0.2.47">Updated to three.js r47</version>
   <tag v="js"/>
   <tag v="three"/>
 </project>
