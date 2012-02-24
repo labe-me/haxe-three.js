@@ -64,9 +64,9 @@ class T04 {
         container.appendChild(renderer.domElement);
 
         stats = new js.Stats();
-        stats.domElement.style.position = 'absolute';
-        stats.domElement.style.top = '0px';
-        container.appendChild( stats.domElement );
+        stats.getDomElement().style.position = 'absolute';
+        stats.getDomElement().style.top = '0px';
+        container.appendChild( stats.getDomElement() );
 
         (untyped Lib.document.addEventListener)( 'mousemove', function(event){
 

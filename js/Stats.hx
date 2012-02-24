@@ -2,8 +2,14 @@ package js;
 
 @:native("Stats")
 extern class Stats {
-    public var domElement : js.Dom.HtmlDom;
     public function new() : Void;
+    public function getDomElement() : js.Dom.HtmlDom;
+    public function getFps() : Float;
+    public function getFpsMin() : Float;
+    public function getFpsMax() : Float;
+    public function getMs() : Float;
+    public function getMsMin() : Float;
+    public function getMsMax() : Float;
     public function update() : Void;
 }
 
