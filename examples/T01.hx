@@ -26,9 +26,15 @@ class T01 {
         renderer.setSize(w, h);
         Lib.document.body.appendChild(renderer.domElement);
         // refresh once in a while
-        var timer = new haxe.Timer(30);
-        timer.run = function(){
+        // var timer = new haxe.Timer(30);
+        // timer.run = function(){
+        //     renderer.render(scene, camera, null, null);
+        // }
+        var update = null;
+        update = function(){
+            js.three.Three.requestAnimationFrame(update);
             renderer.render(scene, camera, null, null);
         }
+        update();
     }
 }

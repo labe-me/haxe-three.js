@@ -25,13 +25,16 @@ class T02 {
             mouseX = (event.clientX - Lib.window.innerWidth / 2);
             mouseY = (event.clientY - Lib.window.innerHeight / 2);
         }, false);
-        var timer = new haxe.Timer(30);
-        timer.run = function(){
+        var run = null;
+        //var timer = new haxe.Timer(30);
+        run = function(){
+            Three.requestAnimationFrame(run);
             camera.position.x += (mouseX - camera.position.x) * 0.05;
             camera.position.y += (-mouseY - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
             mesh.rotation.y -= 0.005;
             renderer.render(scene, camera);
         }
+        run();
     }
 }
