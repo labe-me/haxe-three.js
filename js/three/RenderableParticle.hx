@@ -1,6 +1,8 @@
 package js.three;
 
-@:native("THREE.RenderableParticle") extern class RenderableParticle {
+@:native("THREE.RenderableParticle")
+extern class RenderableParticle {
+    public var object : Dynamic; // TODO Object3D?
     public var x : Float;
     public var y : Float;
     public var z : Float;

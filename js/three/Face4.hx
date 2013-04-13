@@ -13,8 +13,5 @@ extern class Face4 implements Face {
     public var vertexTangents : Array<Vector3>;
     public var materialIndex : Int;
     public var centroid : Vector3;
-    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?vertexNormals:Array<Vector3>, ?color:Color, materialIndex:Int):Void {})
-    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?vertexNormals:Array<Vector3>, ?vertexColors:Array<Color>, materialIndex:Int):Void {})
-    @:overload(function(a:Float, b:Float, c:Float, d:Float, ?normal:Vector3, ?vertexColors:Array<Color>, materialIndex:Int) : Void {})
     public function new(a:Float, b:Float, c:Float, d:Float, ?normal:Vector3, ?color:Color, materialIndex:Int) : Void;
 }

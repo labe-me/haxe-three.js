@@ -3,7 +3,7 @@ package js.three;
 @:native("THREE.PathControls")
 extern class PathControls {
     public var object : Object3D;
-    public var domElement : js.Dom.HtmlDom;
+    public var domElement : js.html.Element;
     public var id : String;
     public var duration : Int; // 10*1000 millis
     public var waypoints : Array<Mesh>;
@@ -17,7 +17,7 @@ extern class PathControls {
     public var lookHorizontal : Bool; // true
     public var verticalAngleMap : { srcRange:Array<Float>, dstRange:Array<Float> };
     public var horizontalAngleMap : { srcRange:Array<Float>, dstRange:Array<Float> };
-    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function new(object:Object3D, ?domElement:js.html.Element) : Void;
     public function init() : Void;
     public function update(delta:Float) : Void;
 }

@@ -14,11 +14,13 @@ extern class CombinedCamera extends Camera {
     public var far : Float;
     public var inPersepectiveMode : Bool;
     public var inOrthographicMode : Bool;
-    public function new(width:Int, height:Int, ?fov:Float, ?near:Float, ?far:Float, ?orthonear:Float, ?orthofar:Float) : Void;
+    public function new(width:Float, height:Float, fov:Float, near:Float, far:Float, orthoNear:Float, orthoFar:Float) : Void;
     public function toPerspective() : Void;
     public function toOrthographic() : Void;
+    public function setSize(width:Float, height:Float) : Void;
     public function setFov(fov:Float) : Void;
-    public function setLens(focalLength:Float, framesize:Float) : Float;
+    public function updateProjectionMatrix() : Void;
+    public function setLens(focalLength:Float, frameHeight:Float) : Float;
     public function setZoom(zoom:Float) : Void;
     public function toFrontView() : Void;
     public function toBackView() : Void;

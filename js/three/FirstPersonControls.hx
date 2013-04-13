@@ -5,7 +5,7 @@ package js.three;
 extern class FirstPersonControls {
     public var object : Object3D;
     public var target : Vector3;
-    public var domElement : js.Dom.HtmlDom;
+    public var domElement : js.html.Element;
     public var movementSpeed : Float; // 1.0
     public var lookSpeed : Float; // 0.005
     public var noFly : Bool; // false
@@ -32,6 +32,6 @@ extern class FirstPersonControls {
     public var moveRight : Bool;
     public var freeze : Bool;
     public var mouseDragOn : Bool;
-    public function new(object:Object3D, ?domElement:js.Dom.HtmlDom) : Void;
+    public function new(object:Object3D, ?domElement:js.html.Element) : Void;
     public function update(delta:Float) : Void;
 }

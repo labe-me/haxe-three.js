@@ -12,7 +12,7 @@ extern class AnimationMorphTarget {
     var loop : Bool; // true
     var influence : Float; // 1
     public function new(root:Mesh, data:Dynamic) : Void;
-    public function play(loop:Bool, startTimeMS:Float) : Void;
+    public function play(?loop:Bool, ?startTimeMS:Float) : Void;
     public function pause() : Void;
     public function stop() : Void;
     public function update(deltaTimeMS:Float) : Void;

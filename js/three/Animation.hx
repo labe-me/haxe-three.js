@@ -11,10 +11,9 @@ extern class Animation {
     public var isPaused : Bool; // true
     public var loop : Bool; // true
     public var interpolationType : Int; // AnimationHandler.LINEAR
-    public var JITCompile : Bool; // true
     public var points : Array<Array<Float>>;
     public var target : Vector3;
-    public function new(root:Mesh, data:String, ?interpolationType:Int /* AnimationHandler statics vars */, ?jitCompile:Bool) : Void;
+    public function new(root:Mesh, name:String, ?interpoltionType:Int) : Void;
     public function play(loop:Bool, startTimeMS:Float) : Void;
     public function pause() : Void;
     public function stop() : Void;
