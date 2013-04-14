@@ -1,6 +1,6 @@
 package js.three;
 
-typedef SplinePoint {x:Float, y:Float, z:Float};
+typedef SplinePoint = {x:Float, y:Float, z:Float};
 
 @:native("THREE.Spline")
 extern class Spline {

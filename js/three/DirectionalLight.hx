@@ -4,7 +4,7 @@ package js.three;
 extern class DirectionalLight extends Light {
     public var target : Object3D;
     public var intensity : Float; // 1
-    public var castShadow : Bool; // false
+    // public var castShadow : Bool; // false
     public var onlyShadow : Bool; // false
 
     public var shadowCameraNear : Float; // 50

@@ -1,7 +1,7 @@
 package js.three;
 
 class Three {
-    public static inline function requestAnimationFrame(f:Void->Void) : Int {
+    public static inline function requestAnimationFrame(f:js.html.RequestAnimationFrameCallback) : Int {
         return untyped js.Browser.window.requestAnimationFrame(f);
     }
 
@@ -9,15 +9,15 @@ class Three {
         untyped js.Browser.window.cancelAnimationFrame(id);
     }
 
-    private static function __init__() : Void untyped {
-        #if !noEmbedJS
-            #if debug
-                haxe.macro.Tools.includeFile("../../vendor/three.js/three.js");
-            #else
-                haxe.macro.Tools.includeFile("../../vendor/three.js/three.min.js");
-            #end
-        #end
-    }
+    // private static function __init__() : Void untyped {
+    //     #if !noEmbedJS
+    //         #if debug
+    //             haxe.macro.Tools.includeFile("../../vendor/three.js/three.js");
+    //         #else
+    //             haxe.macro.Tools.includeFile("../../vendor/three.js/three.min.js");
+    //         #end
+    //     #end
+    // }
 
     // GL STATE CONSTANTS
 

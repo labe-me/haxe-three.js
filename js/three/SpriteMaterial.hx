@@ -5,7 +5,7 @@ extern class SpriteMaterial extends Material {
     public var color : Color; // new Color(0xffffff)
     public var map : Texture;
     public var useScreenCoordinates : Bool; // true
-    public var depthTest : Bool; // false
+    // public var depthTest : Bool; // false
     public var sizeAttenuation : Bool; // false
     public var scaleByViewport : Bool; // false
     public var alignment : Vector2; // SpriteAlignment.center.clone()

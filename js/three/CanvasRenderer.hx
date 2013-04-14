@@ -2,7 +2,7 @@ package js.three;
 
 @:native("THREE.CanvasRenderer")
 extern class CanvasRenderer implements Renderer {
-    public var domElement : js.html.CanvasElement;
+    public var domElement : js.html.Element;
     public var autoClear : Bool; // true
     public var sortObjects : Bool; // true
     public var sortElements : Bool; // true

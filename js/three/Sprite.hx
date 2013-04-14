@@ -8,5 +8,5 @@ extern class Sprite extends Object3D {
     public var uvScale : Vector2; // (1,1)
     public function new(?material:Material) : Void;
     // override public function updateMatrix() : Void
-    public function clone(?object:Sprite) : Sprite;
+    // override public function clone(?object:Sprite) : Sprite;
 }

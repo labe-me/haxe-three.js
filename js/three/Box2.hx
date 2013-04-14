@@ -6,9 +6,9 @@ extern class Box2 {
     public var max : Vector3; // (-Infinity, -Infinity)
     public function new(?min:Vector2, ?max:Vector2) : Void;
     public function set(min:Vector2, max:Vector2) : Box2; // this
-    public function setFromPoints(Array<Vector2>) : Box2; // this
+    public function setFromPoints(points:Array<Vector2>) : Box2; // this
     public function setFromCenterAndSize(center:Vector2, size:Vector2) : Box2; // this
-    public function copy(box) : Box2; // this
+    public function copy(box:Box2) : Box2; // this
     public function makeEmpty() : Box2; // this
     public function empty() : Bool;
     public function center(?optionalTarget:Vector2) : Vector2;

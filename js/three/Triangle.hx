@@ -6,11 +6,14 @@ extern class Triangle {
     public var b : Vector3;
     public var c : Vector3;
     public function new(?a:Vector3, ?b:Vector3, ?c:Vector3) : Void;
-    public static function normal(a:Vector3, b:Vector3, c:Vector3, ?optionalTarget:Vector3) : Vector3;
-    public static function barycoordFromPoint(point:Vector3, a:Vector3, b:Vector3, c:Vector3, ?optionalTarget:Vector3) : Vector3;
-    public static function containsPoint(point:Vector3, a:Vector3, b:Vector3, c:Vector3) : Bool;
+    // "Same field name can't be use for both static and instance : normal"
+    // public static function normal(a:Vector3, b:Vector3, c:Vector3, ?optionalTarget:Vector3) : Vector3;
+    // "Same field name can't be use for both static and instance : barycoordFromPo"
+    // public static function barycoordFromPoint(point:Vector3, a:Vector3, b:Vector3, c:Vector3, ?optionalTarget:Vector3) : Vector3;
+    // "Same field name can't be use for both static and instance : containsPoint"
+    // public static function containsPoint(point:Vector3, a:Vector3, b:Vector3, c:Vector3) : Bool;
     public function set(a:Vector3, b:Vector3, c:Vector3) : Triangle; // this
-    public function setFromPointsAndIndices(Array<Vector3>, i0:Int, i1:Int, i2:Int) : Triangle; // this
+    public function setFromPointsAndIndices(points:Array<Vector3>, i0:Int, i1:Int, i2:Int) : Triangle; // this
     public function copy(triangle:Triangle) : Triangle; // this
     public function area() : Float;
     public function midpoint(?optionalTarget:Vector3) : Vector3;

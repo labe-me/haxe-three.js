@@ -10,5 +10,5 @@ extern class SkinnedMesh extends Mesh {
     public function addBone(bone:Bone) : Bone;
     //override public function updateMatrixWorld(force:Bool) : Void;
     public function pose() : Void;
-    public function clone(?object:SkinnedMesh) : SkinnedMesh;
+    // override public function clone(?object:SkinnedMesh) : SkinnedMesh;
 }

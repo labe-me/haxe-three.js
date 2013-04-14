@@ -8,7 +8,7 @@ extern class SpotLight extends Light {
     public var angle : Float; // Math.PI / 2
     public var exponent : Float; // 10
 
-    public var castShadow : Bool; // false
+    // public var castShadow : Bool; // false
     public var onlyShadow : Bool; // false
 
     public var shadowCameraNear : Float; // 50

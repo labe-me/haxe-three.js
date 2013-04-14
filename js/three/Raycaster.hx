@@ -1,5 +1,12 @@
 package js.three;
 
+typedef RayIntersect = {
+    var distance : Float;
+    var point : Vector3;
+    var face : Face;
+    var object : Object3D;
+};
+
 @:native("THREE.Raycaster")
 extern class Raycaster {
     public var ray : Ray;
