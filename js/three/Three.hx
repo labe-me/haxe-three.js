@@ -12,9 +12,9 @@ class Three {
     private static function __init__() : Void untyped {
         #if !noEmbedJS
             #if debug
-                haxe.macro.Tools.includeFile("js/three/three.js");
+                haxe.macro.Tools.includeFile("../../vendor/three.js/three.js");
             #else
-                haxe.macro.Tools.includeFile("js/three/three.min.js");
+                haxe.macro.Tools.includeFile("../../vendor/three.js/three.min.js");
             #end
         #end
     }
