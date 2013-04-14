@@ -9,15 +9,15 @@ class Three {
         untyped js.Browser.window.cancelAnimationFrame(id);
     }
 
-    // private static function __init__() : Void untyped {
-    //     #if !noEmbedJS
-    //         #if debug
-    //             haxe.macro.Tools.includeFile("../../vendor/three.js/three.js");
-    //         #else
-    //             haxe.macro.Tools.includeFile("../../vendor/three.js/three.min.js");
-    //         #end
-    //     #end
-    // }
+    private static function __init__() : Void untyped {
+        #if embed_js
+            #if debug
+                haxe.macro.Compiler.includeFile("vendor/three.js/three.js");
+            #else
+                haxe.macro.Compiler.includeFile("vendor/three.js/three.min.js");
+            #end
+        #end
+    }
 
     // GL STATE CONSTANTS
 
