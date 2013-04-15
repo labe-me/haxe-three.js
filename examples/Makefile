@@ -1,8 +1,6 @@
 # you will haxe to start a temporary webserver so textures can be loaded and used by webgl
 # call "nekotools server" for instance
 
-t: t04
-
 all: t01 t02 t03 t04
 
 t01:
