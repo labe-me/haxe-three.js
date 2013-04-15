@@ -5,9 +5,9 @@ package:
 
 update-threejs:
 	cd three.js/utils/build && sh build.sh \
-	&& cp ../../build/three.js ../../../js/three/three-debug.js \
-	&& cp ../../build/three.min.js ../../../js/three/three-min.js
+	&& cp ../../build/three.js ../../../vendor/three.js/three.js \
+	&& cp ../../build/three.min.js ../../../vendor/three.js/three.min.js
 
 update-statsjs:
-	cd stats.js/utils && cp ../src/Stats.js ../../js/stats-debug.js
-	cd stats.js/utils && python builder.py && cp ../build/stats.min.js ../../js/stats-min.js
+	cd stats.js/utils && cp ../src/Stats.js ../../vendor/stats.js/stats-debug.js
+	cd stats.js/utils && python builder.py && cp ../build/stats.min.js ../../vendor/stats.js/stats-min.js
