@@ -1,16 +1,16 @@
-import js.three.Three;
-import js.Lib;
+import js.three.*;
+import js.Browser;
 
 class T01 {
     public static function main(){
-        var w = Lib.window.innerWidth;
-        var h = Lib.window.innerHeight;
+        var w = Browser.window.innerWidth;
+        var h = Browser.window.innerHeight;
 
         var scene = new Scene();
         // create a red cube
         var material = new MeshLambertMaterial({color:0xcc0000});
-        var geometry = new CubeGeometry(50, 50, 50, 1, 1, 1, material, null);
-        var cube = new Mesh(geometry, new MeshFaceMaterial());
+        var geometry = new CubeGeometry(50, 50, 50, 1, 1, 1);
+        var cube = new Mesh(geometry, material);
         cube.position.set(0, 100, 0);
         scene.add(cube);
         // add some light
@@ -24,17 +24,18 @@ class T01 {
         // setup renderer in the document
         var renderer = new WebGLRenderer(null);
         renderer.setSize(w, h);
-        Lib.document.body.appendChild(renderer.domElement);
+        Browser.document.body.appendChild(renderer.domElement);
         // refresh once in a while
         // var timer = new haxe.Timer(30);
         // timer.run = function(){
         //     renderer.render(scene, camera, null, null);
         // }
         var update = null;
-        update = function(){
+        update = function(f:Float):Bool{
             js.three.Three.requestAnimationFrame(update);
             renderer.render(scene, camera, null, null);
+            return true;
         }
-        update();
+        update(0);
     }
 }

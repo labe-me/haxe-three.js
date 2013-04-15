@@ -1,5 +1,6 @@
 package js.three;
 
+@:keep
 class Three {
     public static inline function requestAnimationFrame(f:js.html.RequestAnimationFrameCallback) : Int {
         return untyped js.Browser.window.requestAnimationFrame(f);
@@ -10,7 +11,7 @@ class Three {
     }
 
     private static function __init__() : Void untyped {
-        #if embed_js
+        #if !noEmbedJS
             #if debug
                 haxe.macro.Compiler.includeFile("vendor/three.js/three.js");
             #else

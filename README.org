@@ -1,13 +1,9 @@
 #+TITLE: Haxe externs for three.js
 * About
-Haxe externs for [[https://github.com/mrdoob/three.js][three.js]] (release 47).
+Haxe externs for [[https://github.com/mrdoob/three.js][three.js]] (release 57).
 
-Please fork and contribute as I may not maintain it in the long run :)
+These externs are provided to you by *Laurent Bedubourg* and *John Croisant* ( who did 99.9% of the work for the .57 update :)
 
-If you meet me, buy me a beer. If you don't think you are going to meet me, think about
-[[http://labe.me/en/threejs.html][a little donation so I can buy my Humble Bundles :)]]
-
-Laurent
 * Install
 : haxelib install three.js
 * Dev install
@@ -27,21 +23,8 @@ Debug compilation will embed non-minified javascript (easier to debug):
 
 To avoid embedding javascript (don't forget to include three.js javascript manually inside your HTML):
 
-: haxe -lib three.js -DnoEmbedJS ...
+: haxe -lib three.js -D noEmbedJS ...
 
 Take a look at the [[https://github.com/labe-me/haxe-three.js/tree/master/examples][examples]] for some code ported from original three.js examples.
 
-* Todo list
-** TODO Test api
-** TODO Integrate RequestAnimationFrame
-** TODO More work on Collada API part
-** TODO More TODOs in Three.hx
-* Notes
-Haxe modify some javascript prototypes and create a few incompatibilites.
-
-Here's a list of things to care about:
-
-- Array prototype is modified which affect the "for v in someArray" javascript behaviour
-- Date.now is overriden by haxe, the new method returns a Date object instead of the regular time stamp, this is bad and must be adressed.
-
-*Important:* The three.js haxelib package provides a modified Date.hx and haxe/Timer.hx to fix the Date.now() problem.
+*Important:* Due to a small bug in haxe, you may have to import js.three.Three or add it to your command line if you do not reference this class from your code. We are working on the problem.
