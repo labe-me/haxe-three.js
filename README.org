@@ -2,7 +2,7 @@
 * About
 Haxe externs for [[https://github.com/mrdoob/three.js][three.js]] (release 57).
 
-These externs are provided to you by *Laurent Bedubourg* and *John Croisant* ( who did 99.9% of the work for the .57 update :)
+These externs are provided to you by *Laurent Bedubourg* and *John Croisant* (@jacius) ( who did 99.9% of the work for the .57 update :)
 
 * Install
 : haxelib install three.js
