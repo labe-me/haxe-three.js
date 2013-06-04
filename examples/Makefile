@@ -13,4 +13,4 @@ t03:
 	haxe -lib three.js -debug -main T03 -js t03.js
 
 t04:
-	haxe -lib three.js -debug -main T04 -js t04.js
+	haxe -dce no -lib three.js -debug -main T04 -js t04.js

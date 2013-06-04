@@ -1,7 +1,7 @@
 import js.Browser;
 import js.three.*;
 // import * don't really include the class, we have to reference it
-import js.three.Three;
+//import js.three.Three;
 
 class T04 {
     public static function main(){

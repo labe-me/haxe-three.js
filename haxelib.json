@@ -1,0 +1,9 @@
+{
+    "name":"three.js",
+    "url":"https://github.com/labe-me/haxe-three.js",
+    "license":"BSD",
+    "description":"Externs for three.js",
+    "version":"0.4.57",
+    "releasenote":"Updated to three.js r57 and haxe 3",
+    "tags":["js", "three"]
+}
