@@ -14,7 +14,7 @@ extern class Geometry {
     public var morphColors : Array<Color>;
     public var skinWeights : Array<Vector4>;
     public var skinIndices : Array<Vector4>;
-    public var boundingBox : { x:Array<Float>, y:Array<Float>, z:Array<Float> };
+    public var boundingBox : Box3;
     public var boundingSphere : { radius:Float };
     public var hasTangents : Bool; // false
     // public var dynamic : Bool; // true  this.verticesNeedUpdate = false;
