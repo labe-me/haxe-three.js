@@ -1,0 +1,19 @@
+-js t01.js
+-main T01
+-cp ../
+js.three.Three
+--next
+-js t02.js
+-main T02
+-cp ../
+js.three.Three
+--next
+-js t03.js
+-main T03
+-cp ../
+js.three.Three
+--next
+-js t04.js
+-main T04
+-cp ../
+js.three.Three
