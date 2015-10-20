@@ -2,7 +2,7 @@ package js.three;
 
 @:keep
 class Three {
-    public static inline function requestAnimationFrame(f:js.html.RequestAnimationFrameCallback) : Int {
+    public static inline function requestAnimationFrame(f:Float -> Bool) : Int {
         return untyped js.Browser.window.requestAnimationFrame(f);
     }
 
